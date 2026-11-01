@@ -1,8 +1,12 @@
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 4: Ghost in the Machine](https://dev.to/challenges/hacktoberfest-week4-2026-10-26)*
 
+> **DEV Draft Article:** [https://dev.to/chourasiavinit9/memoir-de-ofrenda-a-local-first-dia-de-los-muertos-memory-altar-ghost-in-the-machine-5ai5-temp-slug-4493887/edit](https://dev.to/chourasiavinit9/memoir-de-ofrenda-a-local-first-dia-de-los-muertos-memory-altar-ghost-in-the-machine-5ai5-temp-slug-4493887/edit)
+
 ## What I Built
 
 Between late October and early November—as Halloween shifts into Día de los Muertos—the boundary between the past and present feels remarkably thin. We set out ofrendas, light candles, and gather the favorite foods, songs, and stories of people whose voices once filled our kitchens. 
+
+![Memoir de Ofrenda Live Altar](https://raw.githubusercontent.com/chourasiavinit9-dev/memoir-de-ofrenda/main/docs/screenshots/altar_live.png) 
 
 Yet today, commercial "speak to the departed" AI products suffer from two fundamental flaws:
 1. **The Privacy Breach:** They demand that you upload your family's most intimate memories, private photos, and audio notes into closed corporate databases operated by venture-backed startups that can pivot, raise subscription rates, or shut down.
