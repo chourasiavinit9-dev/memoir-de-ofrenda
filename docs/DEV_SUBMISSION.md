@@ -123,7 +123,11 @@ When you test an unplaced memory question with Dadu's Echo (e.g., *"What sports 
 
 ## My Agent Session
 
-This application was architected, tested, and audited using **Antigravity (Advanced Agentic AI)**. The workflow emphasized local-first privacy architecture, strict prompt engineering for zero hallucination, and rigorous test coverage.
+This application was architected, tested, and audited using **Antigravity (Advanced Agentic AI)**. The interactive session transcript capturing the architecture, prompt engineering for zero hallucination, rate limiter implementation, and test suite execution has been uploaded to DEV:
+
+{% agent_session building-memoir-de-ofrenda-local-first-dia-de-los-muertos-altar-with-gemma-ollama-nqmx8y %}
+
+*Direct link:* [https://dev.to/agent_sessions/building-memoir-de-ofrenda-local-first-dia-de-los-muertos-altar-with-gemma-ollama-nqmx8y](https://dev.to/agent_sessions/building-memoir-de-ofrenda-local-first-dia-de-los-muertos-altar-with-gemma-ollama-nqmx8y)
 
 ---
 
