@@ -6,6 +6,12 @@ PORT     := 8000
 MODEL    := gemma3:4b
 DATA     := ofrenda_data
 
+# Auto-load .env if it exists (export all vars to sub-processes)
+ifneq (,$(wildcard ./.env))
+  include .env
+  export
+endif
+
 .DEFAULT_GOAL := help
 
 .PHONY: help

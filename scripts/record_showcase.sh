@@ -31,3 +31,4 @@ if [ -f "${OUTPUT_FILE}" ]; then
 else
   echo "❌ Recording was interrupted or cancelled."
 fi
+
