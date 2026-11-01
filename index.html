@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ofrenda · Día de los Muertos Memory Altar</title>
+  <meta name="description" content="Ofrenda: an offline, privacy-first Día de los Muertos memory altar powered by a local Gemma LLM via Ollama.">
+  <meta name="theme-color" content="#0a040e">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body class="theme-halloween">
+
+  <!-- Starry Night & Spooky Moon Backdrop (from Images 2, 3, 4, 5) -->
+  <div class="sky-backdrop"></div>
+  <div class="moon"></div>
+  <div class="moon-clouds"></div>
+
+  <!-- Spooky Elements Overlay from Images 2 & 3 (Bats, Tree Branches, Cobwebs) -->
+  <svg class="spooky-elements-overlay" viewBox="0 0 1200 280" preserveAspectRatio="none">
+    <!-- Left Spooky Tree Branch & Cobweb -->
+    <path d="M 0 0 L 220 0 Q 180 50 140 80 Q 190 90 230 70 Q 160 120 100 130 L 0 140 Z" fill="#080e0a"/>
+    <path d="M 0 0 L 0 120 Q 70 90 100 0 Z" fill="#050a07"/>
+    <path d="M 5 5 Q 50 50 100 15 M 10 5 Q 45 75 15 110 M 20 30 Q 55 55 75 22" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" fill="none"/>
+    <!-- Right Spooky Tree Branch -->
+    <path d="M 1200 0 L 980 0 Q 1020 50 1060 80 Q 1010 90 970 70 Q 1040 120 1100 130 L 1200 140 Z" fill="#080e0a"/>
+    <path d="M 1200 0 L 1200 120 Q 1130 90 1100 0 Z" fill="#050a07"/>
+    <!-- Flying Bats across the Harvest Moon -->
+    <path d="M 520 80 Q 532 62 545 74 Q 558 62 570 80 Q 552 77 545 86 Q 538 77 520 80 Z" fill="#080301"/>
+    <path d="M 630 100 Q 644 80 658 94 Q 672 80 686 100 Q 666 96 658 108 Q 650 96 630 100 Z" fill="#080301"/>
+    <path d="M 450 130 Q 462 114 474 126 Q 486 114 498 130 Q 483 127 474 136 Q 465 127 450 130 Z" fill="#080301"/>
+  </svg>
+
+  <!-- Dual Neon Light Edges (from Image 1) -->
+  <div class="neon-border-left"></div>
+  <div class="neon-border-right"></div>
+
+  <!-- Grand Velvet Curtains & Tassels (from Image 5) -->
+  <div class="curtain curtain-left"></div>
+  <div class="curtain curtain-right"></div>
+
+  <svg class="curtain-tieback-left" viewBox="0 0 48 120">
+    <path d="M 0 30 Q 30 50 45 40 Q 35 70 0 65" fill="none" stroke="#d4af37" stroke-width="4"/>
+    <circle cx="43" cy="42" r="7" fill="#f5cd79"/>
+    <path d="M 43 49 L 36 100 L 50 100 Z" fill="#d4af37"/>
+  </svg>
+  <svg class="curtain-tieback-right" viewBox="0 0 48 120">
+    <path d="M 0 30 Q 30 50 45 40 Q 35 70 0 65" fill="none" stroke="#d4af37" stroke-width="4"/>
+    <circle cx="43" cy="42" r="7" fill="#f5cd79"/>
+    <path d="M 43 49 L 36 100 L 50 100 Z" fill="#d4af37"/>
+  </svg>
+
+  <!-- Floating Cempasúchil Marigold Petals -->
+  <div class="petal-container">
+    <div class="petal" style="left: 8%; width: 14px; height: 16px; animation-duration: 9s; animation-delay: 0s;"></div>
+    <div class="petal" style="left: 22%; width: 12px; height: 14px; animation-duration: 12s; animation-delay: 2.5s;"></div>
+    <div class="petal" style="left: 45%; width: 16px; height: 18px; animation-duration: 8s; animation-delay: 1.2s;"></div>
+    <div class="petal" style="left: 68%; width: 13px; height: 15px; animation-duration: 11s; animation-delay: 4s;"></div>
+    <div class="petal" style="left: 88%; width: 15px; height: 17px; animation-duration: 10s; animation-delay: 1.8s;"></div>
+  </div>
+
+  <div class="viewport">
+
+    <!-- Papel Picado Festive Garland (from Images 1 & 5) -->
+    <div class="papel-picado-garland">
+      <!-- Pink Flag -->
+      <div class="flag">
+        <svg viewBox="0 0 68 75">
+          <path d="M 4 2 L 64 2 L 64 68 L 34 56 L 4 68 Z" fill="#e84393"/>
+          <circle cx="34" cy="28" r="10" fill="#280f3d"/>
+          <circle cx="22" cy="42" r="4" fill="#280f3d"/>
+          <circle cx="46" cy="42" r="4" fill="#280f3d"/>
+        </svg>
+      </div>
+      <!-- Marigold Orange Flag -->
+      <div class="flag">
+        <svg viewBox="0 0 68 75">
+          <path d="M 4 2 L 64 2 L 64 68 L 34 56 L 4 68 Z" fill="#e67e22"/>
+          <path d="M 34 16 L 44 32 L 24 32 Z" fill="#280f3d"/>
+          <circle cx="34" cy="40" r="5" fill="#280f3d"/>
+        </svg>
+      </div>
+      <!-- Turquoise Flag -->
+      <div class="flag">
+        <svg viewBox="0 0 68 75">
+          <path d="M 4 2 L 64 2 L 64 68 L 34 56 L 4 68 Z" fill="#00cec9"/>
+          <circle cx="34" cy="30" r="12" fill="#280f3d"/>
+          <circle cx="34" cy="30" r="6" fill="#00cec9"/>
+        </svg>
+      </div>
+      <!-- Emerald Green Flag -->
+      <div class="flag">
+        <svg viewBox="0 0 68 75">
+          <path d="M 4 2 L 64 2 L 64 68 L 34 56 L 4 68 Z" fill="#00b894"/>
+          <circle cx="26" cy="26" r="6" fill="#280f3d"/>
+          <circle cx="42" cy="26" r="6" fill="#280f3d"/>
+          <path d="M 26 40 Q 34 46 42 40" stroke="#280f3d" stroke-width="3" fill="none"/>
+        </svg>
+      </div>
+      <!-- Royal Gold Flag -->
+      <div class="flag">
+        <svg viewBox="0 0 68 75">
+          <path d="M 4 2 L 64 2 L 64 68 L 34 56 L 4 68 Z" fill="#f1c40f"/>
+          <circle cx="34" cy="28" r="9" fill="#280f3d"/>
+          <circle cx="22" cy="42" r="4" fill="#280f3d"/>
+          <circle cx="46" cy="42" r="4" fill="#280f3d"/>
+        </svg>
+      </div>
+      <!-- Violet Flag -->
+      <div class="flag">
+        <svg viewBox="0 0 68 75">
+          <path d="M 4 2 L 64 2 L 64 68 L 34 56 L 4 68 Z" fill="#9b59b6"/>
+          <circle cx="34" cy="30" r="10" fill="#280f3d"/>
+          <circle cx="20" cy="20" r="4" fill="#280f3d"/>
+          <circle cx="48" cy="20" r="4" fill="#280f3d"/>
+        </svg>
+      </div>
+      <!-- Crimson Flag -->
+      <div class="flag">
+        <svg viewBox="0 0 68 75">
+          <path d="M 4 2 L 64 2 L 64 68 L 34 56 L 4 68 Z" fill="#d63031"/>
+          <circle cx="34" cy="32" r="8" fill="#280f3d"/>
+          <circle cx="22" cy="42" r="4" fill="#280f3d"/>
+          <circle cx="46" cy="42" r="4" fill="#280f3d"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Header Section -->
+    <header role="banner" aria-label="Ofrenda – Día de los Muertos Memory Altar">
+      <div class="festive-pretitle" aria-hidden="true">✦ D Í A · D E · L O S · M U E R T O S ✦</div>
+      <div class="title-banner" role="heading" aria-level="1">
+        <!-- Festive Papercut Letter Tiles (from dia-de-muertos-festive.jpg) -->
+        <div class="festive-letter-tiles" aria-label="Ofrenda" aria-hidden="true">
+          <span class="tile tile-yellow">O</span>
+          <span class="tile tile-cyan">F</span>
+          <span class="tile tile-pink">R</span>
+          <span class="tile tile-blue">E</span>
+          <span class="tile tile-orange">N</span>
+          <span class="tile tile-purple">D</span>
+          <span class="tile tile-rose">A</span>
+        </div>
+        <div class="sub-title">An offline memory altar · Where memories live in warmth and color</div>
+      </div>
+      <nav class="top-controls" aria-label="Main controls">
+        <!-- Live Air-Gap Status Badge (Feature 3) -->
+        <div class="status-badge" id="airgap-status-pill"
+             onclick="toggleAirGapSimulation()"
+             role="button" tabindex="0"
+             aria-live="polite" aria-atomic="true"
+             aria-label="Air-gap verification indicator – click to simulate offline"
+             onkeydown="if(event.key==='Enter'||event.key===' ')toggleAirGapSimulation()"
+             title="Click to test/simulate Air-Gap Offline Verification mode">
+          <span class="status-dot pulse" id="airgap-dot" aria-hidden="true"></span>
+          <span id="airgap-status-text">Zero Cloud Telemetry • localhost:11434</span>
+          <span id="header-model-lbl" style="opacity: 0.85; font-size: 12px; margin-left: 4px;" aria-label="Model">(gemma3:4b)</span>
+        </div>
+
+        <!-- Ambient Sanctuary Drone (Feature 4) -->
+        <button class="btn-glass" id="ambient-audio-btn" onclick="toggleAmbientDrone()"
+                aria-pressed="false"
+                title="Warm harmonic Cmaj7 sanctuary drone (Web Audio API)">
+          <span id="ambient-audio-label">🎵 Sanctuary Drone</span>
+        </button>
+
+        <!-- Time Capsule Export / Import (Feature 2) -->
+        <button class="btn-glass" onclick="exportTimeCapsuleVault()"
+                aria-label="Save time capsule as .ofrenda.json"
+                title="Save .ofrenda.json portable time capsule">
+          <span aria-hidden="true">💾</span> Save .ofrenda
+        </button>
+        <button class="btn-glass" onclick="document.getElementById('import-capsule-file').click()"
+                aria-label="Load .ofrenda.json time capsule file"
+                title="Load .ofrenda.json file">
+          <span aria-hidden="true">📂</span> Load Capsule
+        </button>
+        <input type="file" id="import-capsule-file" accept=".json,.ofrenda.json"
+               class="hidden" aria-label="Import time capsule file"
+               onchange="importTimeCapsuleVault(this)">
+
+        <button class="btn-gold" id="theme-toggle-btn" onclick="toggleHalloweenTheme()"
+                aria-label="Toggle between Halloween orange and Día de los Muertos purple theme">
+          <span id="theme-btn-label">🎃 Orange Halloween Mode</span>
+        </button>
+        <button class="btn-gold" onclick="openModal('add-modal')"
+                aria-label="Add a loved one to the altar">
+          <span aria-hidden="true">🕯️</span> Light a Candle
+        </button>
+        <button class="btn-glass" onclick="openModal('settings-modal')"
+                aria-label="Open settings – what runs where">
+          <span aria-hidden="true">⚙️</span> What Runs Where
+        </button>
+      </nav>
+    </header>
+
+    <!-- THE GRAND 3-TIERED ARCHITECTURAL OFRENDA ALTAR -->
+    <main>
+    <section class="altar-architectural" aria-label="The Memory Altar">
+
+      <!-- Flanking Calaveras (Sugar Skulls) from Image 1 & 5 -->
+      <div class="altar-side-skulls">
+        <!-- Left Sugar Skull -->
+        <svg class="skull-guardian skull-left" viewBox="0 0 100 120">
+          <path d="M 20 50 C 20 20, 80 20, 80 50 C 80 70, 75 80, 68 85 L 68 105 C 68 110, 32 110, 32 105 L 32 85 C 25 80, 20 70, 20 50 Z" fill="#fdfbf7" stroke="#e1b12c" stroke-width="2"/>
+          <!-- Floral Eyes -->
+          <circle cx="38" cy="52" r="11" fill="#1b0726"/>
+          <circle cx="38" cy="52" r="6" fill="#e84393"/>
+          <circle cx="62" cy="52" r="11" fill="#1b0726"/>
+          <circle cx="62" cy="52" r="6" fill="#e84393"/>
+          <!-- Heart Nose -->
+          <path d="M 50 68 Q 46 64 48 73 Q 50 78 50 78 Q 50 78 52 73 Q 54 64 50 68 Z" fill="#1b0726"/>
+          <!-- Teeth & Ornaments -->
+          <path d="M 38 95 L 62 95 M 43 90 L 43 100 M 50 90 L 50 100 M 57 90 L 57 100" stroke="#1b0726" stroke-width="2"/>
+          <circle cx="50" cy="30" r="4" fill="#00cec9"/>
+          <path d="M 40 28 Q 50 36 60 28" stroke="#ff7675" stroke-width="2" fill="none"/>
+        </svg>
+
+        <!-- Right Sugar Skull -->
+        <svg class="skull-guardian skull-right" viewBox="0 0 100 120">
+          <path d="M 20 50 C 20 20, 80 20, 80 50 C 80 70, 75 80, 68 85 L 68 105 C 68 110, 32 110, 32 105 L 32 85 C 25 80, 20 70, 20 50 Z" fill="#fdfbf7" stroke="#e1b12c" stroke-width="2"/>
+          <circle cx="38" cy="52" r="11" fill="#1b0726"/>
+          <circle cx="38" cy="52" r="6" fill="#00cec9"/>
+          <circle cx="62" cy="52" r="11" fill="#1b0726"/>
+          <circle cx="62" cy="52" r="6" fill="#00cec9"/>
+          <path d="M 50 68 Q 46 64 48 73 Q 50 78 50 78 Q 50 78 52 73 Q 54 64 50 68 Z" fill="#1b0726"/>
+          <path d="M 38 95 L 62 95 M 43 90 L 43 100 M 50 90 L 50 100 M 57 90 L 57 100" stroke="#1b0726" stroke-width="2"/>
+          <circle cx="50" cy="30" r="4" fill="#e84393"/>
+          <path d="M 40 28 Q 50 36 60 28" stroke="#f1c40f" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+
+      <!-- TIER 1 (TOP): The Grand Baroque Golden Frame Centerpiece -->
+      <div class="altar-tier-top">
+        <div style="display: flex; align-items: flex-end; gap: 20px; justify-content: center; flex-wrap: wrap;">
+
+          <!-- Left Incense Burner with Smoke -->
+          <div class="incense-container">
+            <svg class="smoke-curl" viewBox="0 0 30 100">
+              <path d="M 15 95 Q 5 70 20 50 Q 5 30 15 5" fill="none" stroke="rgba(235, 215, 255, 0.5)" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <div class="candle">
+              <div class="candle-flame"></div>
+              <div class="candle-body" style="height: 40px;"></div>
+            </div>
+          </div>
+
+          <!-- Left Marigold Bouquet in Clay Vase (from Image 5) -->
+          <div class="marigold-vase-container">
+            <svg class="marigold-bouquet" viewBox="0 0 70 60">
+              <!-- Cluster of bright marigolds -->
+              <circle cx="35" cy="20" r="14" fill="#ff7a1a"/>
+              <circle cx="35" cy="20" r="10" fill="#ffa502"/>
+              <circle cx="35" cy="20" r="5" fill="#ffeaa7"/>
+              <circle cx="18" cy="30" r="12" fill="#e67e22"/>
+              <circle cx="18" cy="30" r="8" fill="#f39c12"/>
+              <circle cx="52" cy="30" r="12" fill="#e67e22"/>
+              <circle cx="52" cy="30" r="8" fill="#f39c12"/>
+              <circle cx="35" cy="38" r="12" fill="#ff7a1a"/>
+              <circle cx="35" cy="38" r="8" fill="#ffa502"/>
+            </svg>
+            <div class="clay-vase"></div>
+          </div>
+
+          <!-- Central Grand Golden Picture Frame with Baroque Flourishes -->
+          <div class="shrine-outer-frame" id="top-golden-frame">
+            <!-- Sombrero Sticker resting on top of the frame (from Canva reference) -->
+            <svg class="altar-sticker sticker-sombrero" viewBox="0 0 100 60" title="Mexican Sombrero">
+              <path d="M 35 32 Q 50 10 65 32 Z" fill="#f1c40f" stroke="#d35400" stroke-width="2"/>
+              <path d="M 37 25 Q 50 18 63 25" stroke="#00cec9" stroke-width="3" fill="none"/>
+              <ellipse cx="50" cy="40" rx="46" ry="14" fill="#f39c12" stroke="#d35400" stroke-width="2"/>
+              <ellipse cx="50" cy="40" rx="38" ry="10" fill="#f1c40f"/>
+              <path d="M 12 40 Q 50 50 88 40" stroke="#e84393" stroke-width="2" fill="none"/>
+              <circle cx="20" cy="48" r="3" fill="#e84393"/>
+              <circle cx="35" cy="51" r="3" fill="#00cec9"/>
+              <circle cx="50" cy="52" r="3" fill="#f1c40f"/>
+              <circle cx="65" cy="51" r="3" fill="#e84393"/>
+              <circle cx="80" cy="48" r="3" fill="#00cec9"/>
+            </svg>
+
+            <!-- Baroque Corner Ornaments -->
+            <svg class="frame-corner corner-tl" viewBox="0 0 40 40">
+              <path d="M 4 36 C 4 12, 12 4, 36 4 M 10 10 Q 20 4 30 10 Q 20 20 10 30" fill="none" stroke="#fcf6ba" stroke-width="3"/>
+              <circle cx="12" cy="12" r="3" fill="#bf953f"/>
+            </svg>
+            <svg class="frame-corner corner-tr" viewBox="0 0 40 40">
+              <path d="M 4 36 C 4 12, 12 4, 36 4 M 10 10 Q 20 4 30 10 Q 20 20 10 30" fill="none" stroke="#fcf6ba" stroke-width="3"/>
+              <circle cx="12" cy="12" r="3" fill="#bf953f"/>
+            </svg>
+            <svg class="frame-corner corner-bl" viewBox="0 0 40 40">
+              <path d="M 4 36 C 4 12, 12 4, 36 4 M 10 10 Q 20 4 30 10 Q 20 20 10 30" fill="none" stroke="#fcf6ba" stroke-width="3"/>
+              <circle cx="12" cy="12" r="3" fill="#bf953f"/>
+            </svg>
+            <svg class="frame-corner corner-br" viewBox="0 0 40 40">
+              <path d="M 4 36 C 4 12, 12 4, 36 4 M 10 10 Q 20 4 30 10 Q 20 20 10 30" fill="none" stroke="#fcf6ba" stroke-width="3"/>
+              <circle cx="12" cy="12" r="3" fill="#bf953f"/>
+            </svg>
+
+            <div class="shrine-inner-canvas" id="centerpiece-canvas">
+              <div class="shrine-placeholder" id="empty-shrine-msg">
+                <span class="icon">🌼</span>
+                <div style="font-weight: 600; font-size: 20px;">Light a candle</div>
+                <div style="font-size: 14px; color: var(--text-mute); margin-top: 6px;">Select a loved one below or add someone new to place them on the altar.</div>
+              </div>
+              <img id="centerpiece-img" class="hidden" alt="Loved One Portrait">
+            </div>
+          </div>
+
+          <!-- Right Marigold Bouquet in Clay Vase (from Image 5) -->
+          <div class="marigold-vase-container">
+            <svg class="marigold-bouquet" viewBox="0 0 70 60">
+              <circle cx="35" cy="20" r="14" fill="#ff7a1a"/>
+              <circle cx="35" cy="20" r="10" fill="#ffa502"/>
+              <circle cx="35" cy="20" r="5" fill="#ffeaa7"/>
+              <circle cx="18" cy="30" r="12" fill="#e67e22"/>
+              <circle cx="18" cy="30" r="8" fill="#f39c12"/>
+              <circle cx="52" cy="30" r="12" fill="#e67e22"/>
+              <circle cx="52" cy="30" r="8" fill="#f39c12"/>
+              <circle cx="35" cy="38" r="12" fill="#ff7a1a"/>
+              <circle cx="35" cy="38" r="8" fill="#ffa502"/>
+            </svg>
+            <div class="clay-vase"></div>
+          </div>
+
+          <!-- Right Incense Burner with Smoke -->
+          <div class="incense-container">
+            <svg class="smoke-curl" viewBox="0 0 30 100" style="animation-delay: -1.8s;">
+              <path d="M 15 95 Q 25 70 10 50 Q 25 30 15 5" fill="none" stroke="rgba(235, 215, 255, 0.5)" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <div class="candle">
+              <div class="candle-flame"></div>
+              <div class="candle-body" style="height: 40px;"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Mexican Embroidered Runner between Tiers -->
+      <div class="mexican-runner"></div>
+
+      <!-- TIER 2: Loved Ones Gallery on the Altar Shelf -->
+      <div class="altar-tier-shelf">
+        <div class="altar-tier-label">✦ The Loved Ones on this Altar ✦</div>
+
+        <!-- Mexican Floral Guitar (from Canva reference) -->
+        <svg class="altar-sticker sticker-guitar" viewBox="0 0 80 150" title="Mexican Floral Guitar">
+          <rect x="36" y="10" width="8" height="60" fill="#e67e22" stroke="#5d4037" stroke-width="1.5"/>
+          <polygon points="34,2 46,2 48,15 32,15" fill="#d35400"/>
+          <circle cx="30" cy="5" r="2.5" fill="#f1c40f"/>
+          <circle cx="30" cy="11" r="2.5" fill="#f1c40f"/>
+          <circle cx="50" cy="5" r="2.5" fill="#f1c40f"/>
+          <circle cx="50" cy="11" r="2.5" fill="#f1c40f"/>
+          <path d="M 40 60 C 22 60 18 78 28 92 C 14 105 16 138 40 142 C 64 138 66 105 52 92 C 62 78 58 60 40 60 Z" fill="#e84393" stroke="#c2185b" stroke-width="2"/>
+          <circle cx="40" cy="85" r="12" fill="#2d132c"/>
+          <circle cx="40" cy="85" r="8" fill="#f1c40f"/>
+          <circle cx="40" cy="85" r="5" fill="#2d132c"/>
+          <circle cx="28" cy="115" r="5" fill="#00cec9"/>
+          <circle cx="52" cy="115" r="5" fill="#00cec9"/>
+          <path d="M 32 128 Q 40 135 48 128" stroke="#f1c40f" stroke-width="3" fill="none"/>
+          <rect x="32" y="118" width="16" height="5" fill="#fff" rx="2"/>
+          <line x1="38" y1="15" x2="38" y2="118" stroke="#fff" stroke-width="1" opacity="0.7"/>
+          <line x1="42" y1="15" x2="42" y2="118" stroke="#fff" stroke-width="1" opacity="0.7"/>
+        </svg>
+
+        <!-- Spirit Cat Alebrije (from Canva reference) -->
+        <svg class="altar-sticker sticker-cat" viewBox="0 0 90 100" title="Spirit Cat Alebrije">
+          <path d="M 32 82 Q 35 55 45 50 Q 55 55 58 82 Z" fill="#e67e22" stroke="#d35400" stroke-width="2"/>
+          <circle cx="45" cy="38" r="16" fill="#e67e22" stroke="#d35400" stroke-width="2"/>
+          <polygon points="32,32 30,16 42,26" fill="#f1c40f" stroke="#d35400" stroke-width="1.5"/>
+          <polygon points="58,32 60,16 48,26" fill="#f1c40f" stroke="#d35400" stroke-width="1.5"/>
+          <ellipse cx="40" cy="36" rx="2.5" ry="4" fill="#00cec9"/>
+          <ellipse cx="50" cy="36" rx="2.5" ry="4" fill="#00cec9"/>
+          <polygon points="45,41 43,44 47,44" fill="#e84393"/>
+          <path d="M 56 75 Q 75 75 70 50 Q 66 40 60 48" stroke="#f1c40f" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <circle cx="45" cy="64" r="5" fill="#f1c40f"/>
+          <circle cx="45" cy="64" r="2.5" fill="#e84393"/>
+        </svg>
+
+        <!-- Spirit Dog Alebrije (Xoloitzcuintli, from Canva reference) -->
+        <svg class="altar-sticker sticker-dog" viewBox="0 0 100 100" title="Alebrije Spirit Dog">
+          <path d="M 30 75 Q 35 55 48 50 Q 60 48 70 65 L 75 88 Q 70 90 62 88 L 60 75 L 45 75 L 42 88 Q 32 90 30 75 Z" fill="#00cec9" stroke="#0097a7" stroke-width="2"/>
+          <path d="M 70 70 Q 88 65 85 50 Q 82 45 78 52" stroke="#e84393" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M 40 45 Q 40 28 50 25 Q 60 28 60 45 Q 52 52 40 45 Z" fill="#00cec9" stroke="#0097a7" stroke-width="2"/>
+          <path d="M 44 26 L 36 12 Q 42 16 46 24 Z" fill="#e84393"/>
+          <path d="M 56 26 L 64 12 Q 58 16 54 24 Z" fill="#e84393"/>
+          <circle cx="45" cy="35" r="2.5" fill="#1b0826"/>
+          <circle cx="55" cy="35" r="2.5" fill="#1b0826"/>
+          <circle cx="50" cy="40" r="2" fill="#ff7675"/>
+          <circle cx="52" cy="62" r="6" fill="#f1c40f"/>
+          <circle cx="52" cy="62" r="3" fill="#e84393"/>
+          <circle cx="65" cy="72" r="4" fill="#ff7675"/>
+        </svg>
+        <!-- Carved Jack-o'-Lantern Pumpkin (from Image 2: media_1793507127859_a2aa4405.jpg) -->
+        <svg class="jack-o-lantern" viewBox="0 0 100 85">
+          <ellipse cx="50" cy="50" rx="46" ry="32" fill="#ff7700"/>
+          <ellipse cx="50" cy="50" rx="36" ry="32" fill="#ff8c00"/>
+          <ellipse cx="50" cy="50" rx="20" ry="32" fill="#ffa502"/>
+          <path d="M 46 20 Q 48 10 58 8 L 54 18 Z" fill="#27ae60"/>
+          <polygon points="32,40 44,42 36,49" fill="#1b0800"/>
+          <polygon points="34,41 42,43 37,47" fill="#ffeaa7"/>
+          <polygon points="68,40 56,42 64,49" fill="#1b0800"/>
+          <polygon points="66,41 58,43 63,47" fill="#ffeaa7"/>
+          <polygon points="48,46 52,46 50,50" fill="#ffeaa7"/>
+          <path d="M 28 58 Q 50 74 72 58 Q 66 68 50 68 Q 34 68 28 58 Z" fill="#ffeaa7"/>
+        </svg>
+        <div class="people-shelf-grid" id="altar-people-grid">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+    </section>
+    </main>
+
+    <!-- ACTIVE SHRINE INTERACTION CONSOLE (When a person is selected) -->
+    <section class="shrine-console hidden" id="active-shrine-panel" aria-label="Shrine interaction console" aria-live="polite">
+      <div class="shrine-header">
+        <div>
+          <h2 class="shrine-title" id="shrine-person-name">Abuela Elena</h2>
+          <div class="shrine-subtitle" id="shrine-person-relation">Beloved Grandmother</div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-glass" onclick="document.getElementById('photo-uploader-input').click()"
+                  aria-label="Add or update portrait photo for this person">
+            📷 Add / Update Photo
+          </button>
+          <input type="file" id="photo-uploader-input" accept="image/*" class="hidden"
+                 aria-label="Upload photo"
+                 onchange="handlePhotoUpload(this)">
+          <button class="btn-glass" style="color: #ff8a8a; border-color: rgba(255, 138, 138, 0.4);"
+                  onclick="handleForgetVisits()"
+                  aria-label="Clear all past echo conversation visits">
+            Forget Visits
+          </button>
+        </div>
+      </div>
+
+      <!-- Offerings on the Altar (Foods, Songs) -->
+      <div class="offerings-basket" id="shrine-offerings-basket">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Interactive Offerings from Canva reference -->
+      <div style="margin-bottom: 22px; padding: 14px 18px; background: rgba(30, 10, 42, 0.65); border: 1.5px dashed rgba(225, 177, 44, 0.4); border-radius: 14px;">
+        <div style="font-family: var(--font-sans); font-size: 13px; font-weight: 700; color: var(--gold-2); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px;">
+          ✦ Place a Folk Offering on their Altar ✦
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="btn-glass" onclick="addInstantOffering('🍞 Pan de Muerto')">🍞 Pan de Muerto</button>
+          <button class="btn-glass" onclick="addInstantOffering('🌸 Cempasúchil Bouquet')">🌸 Cempasúchil</button>
+          <button class="btn-glass" onclick="addInstantOffering('🎸 Guitar Serenata')">🎸 Serenata</button>
+          <button class="btn-glass" onclick="addInstantOffering('☕ Hot Chocolate')">☕ Chocolate</button>
+          <button class="btn-glass" onclick="addInstantOffering('🦴 Sugar Bone Treat')">🦴 Huesito</button>
+          <button class="btn-glass" onclick="addInstantOffering('🕯️ Patterned Votive')">🕯️ Votive Candle</button>
+          <button class="btn-glass" onclick="addInstantOffering('👒 Sombrero')">👒 Sombrero</button>
+        </div>
+      </div>
+
+      <!-- Toolbar Actions -->
+      <div class="shrine-toolbar" role="toolbar" aria-label="Shrine actions">
+        <button class="btn-gold" onclick="generateRemembrance()"
+                aria-label="Generate a poetic remembrance from family notes">
+          ✨ Write a Remembrance
+        </button>
+        <button class="btn-glass hidden" id="listen-remem-btn" onclick="speakCurrentRemembrance()"
+                aria-label="Listen to remembrance via voice narration">
+          🔊 Listen (Voice)
+        </button>
+        <button class="btn-glass hidden" id="compare-cloud-btn" onclick="handleCloudCompare()"
+                aria-label="Compare local Gemma output with Ultramarine cloud model">
+          ⚖️ Compare with Cloud (Ultramarine)
+        </button>
+        <button class="btn-glass hidden" id="record-story-btn" onclick="toggleRecordStory()"
+                aria-label="Record an oral story by voice">
+          🎙️ Record a Story
+        </button>
+      </div>
+
+      <!-- Audio Recording Tray -->
+      <div class="remembrance-card hidden" id="recording-tray" role="region" aria-label="Voice recording tray">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <span style="font-weight: 600; color: var(--gold-2);" id="rec-status-label" aria-live="polite">
+            <span class="recording-pulse" aria-hidden="true"></span> Recording oral history...
+          </span>
+          <button class="btn-gold" id="finish-rec-btn" onclick="toggleRecordStory()"
+                  aria-label="Finish recording">Finish</button>
+        </div>
+        <textarea class="input-field" id="transcription-text"
+                  placeholder="Transcribing voice..." readonly
+                  aria-label="Voice transcription result"></textarea>
+        <div style="margin-top: 10px; display: flex; gap: 10px;">
+          <button class="btn-glass hidden" id="add-transcription-btn" onclick="saveSpokenStory()"
+                  aria-label="Save spoken story to this person's notes">
+            + Add to their stories
+          </button>
+        </div>
+      </div>
+
+      <!-- Cloud Comparison Results Card -->
+      <div class="hidden" id="compare-results-box" role="region" aria-label="Cloud comparison results">
+        <div class="compare-grid" id="compare-grid-content"></div>
+      </div>
+
+      <!-- Remembrance Output Box -->
+      <div class="remembrance-card hidden" id="remembrance-box" role="region" aria-label="Generated remembrance">
+        <div class="remembrance-text" id="remembrance-content" aria-live="polite">The candle flickers as Gemma writes the remembrance...</div>
+        <div class="remembrance-meta">
+          <span>Grounded strictly in family notes · Local model</span>
+          <button class="btn-glass" style="padding: 4px 10px; font-size: 12px;"
+                  onclick="speakCurrentRemembrance()"
+                  aria-label="Read the remembrance aloud">🔊 Read aloud</button>
+        </div>
+      </div>
+
+      <!-- Photo Caption Output Box -->
+      <div class="remembrance-card hidden" id="photo-caption-box" role="region" aria-label="AI photo caption">
+        <div style="font-weight: 600; color: var(--gold-2); margin-bottom: 6px;">Gemma's Local Vision Caption:</div>
+        <div class="remembrance-text" id="photo-caption-content" style="font-size: 17px;" aria-live="polite">Looking at the photo...</div>
+        <div style="margin-top: 10px;">
+          <button class="btn-glass" id="save-caption-btn" onclick="savePhotoCaptionToStories()"
+                  aria-label="Add AI caption to this person's stories">+ Add caption to their stories</button>
+        </div>
+      </div>
+
+      <!-- Conversational Echo Portal -->
+      <div class="echo-portal" role="region" aria-label="Memory Echo conversation">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 6px;">
+          <div class="echo-portal-title">
+            <span aria-hidden="true">🕯️</span> Visit Their Echo
+          </div>
+          <!-- Feature 5: 1-Click Guardrail Verification Test Button -->
+          <button type="button" class="guardrail-test-btn" onclick="runGuardrailVerificationTest()"
+                  aria-label="Test ethical guardrail: sends an unplaced memory question to verify zero hallucination"
+                  title="Test zero-hallucination guardrail: automatically asks an unplaced memory question">
+            <span aria-hidden="true">⚡</span> Test Ethical Guardrail (Ask Unplaced Memory)
+          </button>
+        </div>
+        <div class="echo-disclaimer">
+          Every response cites the exact source phrase from family stories and strictly refuses to fabricate facts.
+        </div>
+
+        <div class="chat-stream" id="chat-messages-container"
+             role="log" aria-live="polite" aria-atomic="false" aria-label="Echo conversation history">
+          <!-- Chat bubbles inserted here -->
+        </div>
+
+        <div class="chat-input-bar">
+          <label for="chat-user-input" class="visually-hidden">Ask the Memory Echo a question</label>
+          <input type="text" class="input-field" id="chat-user-input"
+                 placeholder="Ask about a story or memory..."
+                 aria-label="Ask the Memory Echo a question"
+                 onkeydown="if(event.key==='Enter')sendChatMessage()">
+          <button class="btn-gold" onclick="sendChatMessage()" aria-label="Send message to Memory Echo">
+            <span>Speak</span>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- ADD SOMEONE TO THE ALTAR MODAL -->
+  <div class="modal-overlay" id="add-modal" role="dialog" aria-modal="true" aria-label="Add someone to the altar">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('add-modal')" aria-label="Close dialog">×</button>
+      <h2 class="modal-title">Place Someone on the Altar</h2>
+      <p style="font-size: 15px; color: var(--text-mute); margin-bottom: 20px;">
+        Light a candle for a loved one. Their stories stay purely on your machine.
+      </p>
+
+      <div class="form-group">
+        <label for="new-name">Name</label>
+        <input class="input-field" id="new-name" aria-label="Name of loved one" placeholder="e.g. Abuela Elena, David, Dr. Harrison">
+      </div>
+      <div class="form-group">
+        <label for="new-relation">Who were they to you?</label>
+        <input class="input-field" id="new-relation" aria-label="Relation or role" placeholder="e.g. Grandmother, Father, Lifelong friend">
+      </div>
+      <div class="form-group">
+        <label for="new-foods">Favorite Foods</label>
+        <input class="input-field" id="new-foods" aria-label="Favorite foods" placeholder="e.g. Pan de muerto, tamales dulces, chocolate abuelita">
+      </div>
+      <div class="form-group">
+        <label for="new-songs">Favorite Songs / Melodies</label>
+        <input class="input-field" id="new-songs" aria-label="Favorite songs or melodies" placeholder="e.g. Cielito Lindo, Amor Eterno, Spanish guitar">
+      </div>
+      <div class="form-group">
+        <label for="new-stories">Stories & Memories (the more specific, the better)</label>
+        <textarea class="input-field" id="new-stories" aria-label="Stories and memories" placeholder="Tell the stories you cherish: their laughter, moments you shared, the advice they gave you..."></textarea>
+      </div>
+
+      <div style="text-align: right; margin-top: 20px;">
+        <button class="btn-gold" style="padding: 11px 26px;" onclick="handleSavePerson()">
+          🕯️ Light a Candle
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- "WHAT RUNS WHERE" SETTINGS MODAL -->
+  <div class="modal-overlay" id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('settings-modal')" aria-label="Close settings dialog">×</button>
+      <h2 class="modal-title" id="settings-modal-title">What Runs Where</h2>
+      <p style="font-size: 15px; color: var(--text-mute); margin-bottom: 20px;">
+        You have complete control over what stays local and what (if anything) touches the cloud.
+      </p>
+
+      <div class="form-group" style="padding: 12px; background: rgba(0,0,0,0.3); border-radius: 8px;">
+        <label for="setting-model-select">🟢 Local Language Model (Ollama)</label>
+        <select class="input-field" id="setting-model-select" aria-label="Select local language model" onchange="changeSettingModel(this.value)">
+          <!-- Options populated from /api/models -->
+        </select>
+        <div style="font-size: 13px; color: var(--text-mute); margin-top: 6px;">Runs 100% offline on your device through Ollama.</div>
+      </div>
+
+      <div class="form-group" style="padding: 12px; background: rgba(0,0,0,0.3); border-radius: 8px;">
+        <label for="setting-engine-select">🟢 Echo Engine</label>
+        <select class="input-field" id="setting-engine-select" aria-label="Select echo agent engine" onchange="changeSettingEngine(this.value)">
+          <option value="ollama">Direct Ollama (Stateless)</option>
+          <option value="mastra">Mastra Agent (with Persistent Memory)</option>
+        </select>
+        <div style="font-size: 13px; color: var(--gold-2); margin-top: 6px;" id="setting-engine-note"></div>
+      </div>
+
+      <div class="form-group" style="padding: 12px; background: rgba(0,0,0,0.3); border-radius: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <label style="margin: 0;">🟠 ElevenLabs Voice (Cloud & Optional)</label>
+          <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+            <input type="checkbox" id="setting-voice-checkbox" aria-label="Enable ElevenLabs voice" onchange="changeSettingVoice(this.checked)"> Enable Voice
+          </label>
+        </div>
+        <div style="font-size: 13px; color: var(--text-mute); margin-top: 6px;" id="setting-voice-note">
+          When enabled, audio recorded is sent to ElevenLabs for transcription, and remembrances are read aloud with a generic narrator voice (no cloning).
+        </div>
+      </div>
+
+      <div style="text-align: right; margin-top: 20px;">
+        <button class="btn-glass" onclick="closeModal('settings-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast for Errors -->
+  <div id="err-toast"></div>
+
+  <script src="/assets/js/app.js" defer></script>
+</body>
+</html>

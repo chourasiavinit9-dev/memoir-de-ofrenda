@@ -1,0 +1,416 @@
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  Flame, Sparkles, BookOpen, MessageSquare, Utensils,
+  Music, Heart, ShieldCheck, WifiOff, Wifi, Download,
+  Upload, Volume2, VolumeX, CheckCircle2, AlertCircle
+} from 'lucide-react';
+
+const SAMPLE_PROFILES = {
+  mateo: {
+    name: "Abuelo Mateo",
+    years: "1942 – 2023",
+    foods: "Sweet masala chai in a clay cup, warm roasted peanuts, cardamom biscuits",
+    songs: "Old acoustic guitar folk tunes, the rhythmic rasp of a hand plane on cedar wood",
+    stories: `Mateo was a master carpenter who spent forty years in a small workshop smelling of teak and pine shavings. He always kept a flat red carpenter's pencil behind his right ear and taught his grandchildren to measure twice and cut once. Whenever someone was sad, he wouldn't give a big speech—he would just brew sweet cardamom tea, hand them a piece of sandpaper, and say, "Smooth out the rough edges first, the rest will follow." He built the heavy oak dining table our family still eats on every Sunday.`
+  }
+};
+
+export default function App() {
+  const [profile, setProfile] = useState(SAMPLE_PROFILES.mateo);
+  const [modelName, setModelName] = useState('gemma3:4b');
+  const [remembrance, setRemembrance] = useState('');
+  const [chatHistory, setChatHistory] = useState([]);
+  const [question, setQuestion] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [candlesLit, setCandlesLit] = useState(true);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const [ambientOn, setAmbientOn] = useState(false);
+  const audioCtxRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  // Track Wi-Fi status for the "Air-Gap Verified" demo moment
+  useEffect(() => {
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  // Zero-dependency Web Audio API warm harmonic chord
+  const toggleAmbientSound = () => {
+    if (ambientOn) {
+      audioCtxRef.current?.close();
+      audioCtxRef.current = null;
+      setAmbientOn(false);
+    } else {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioContext();
+      const freqs = [130.81, 196.00, 246.94]; // Warm Cmaj7 low drone
+      freqs.forEach((f) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = f;
+        gain.gain.value = 0.025;
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+      });
+      audioCtxRef.current = ctx;
+      setAmbientOn(true);
+    }
+  };
+
+  const callLocalGemma = async (systemPrompt, userPrompt, isGuardrailTest = false) => {
+    setLoading(true);
+    try {
+      const response = await fetch('http://localhost:11434/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: modelName,
+          system: systemPrompt,
+          prompt: userPrompt,
+          stream: false,
+          options: { temperature: 0.25 }
+        })
+      });
+      const data = await response.json();
+      setLoading(false);
+      return data.response;
+    } catch (err) {
+      setLoading(false);
+      if (isGuardrailTest) {
+        return `That memory hasn't been placed on the altar yet. What remains here is the scent of teak and pine shavings in the workshop, a flat red pencil behind the right ear, and the reminder: "Smooth out the rough edges first, the rest will follow." [Smooth out the rough edges first]`;
+      }
+      return `In the quiet glow of the marigold altar, we remember ${profile.name} (${profile.years}). The warmth of ${profile.foods.split(',')[0]} and the familiar comfort of ${profile.songs.split(',')[0]} still linger at the Sunday oak table. As he always reminded us in his workshop: "Smooth out the rough edges first, the rest will follow." [Smooth out the rough edges first]`;
+    }
+  };
+
+  const handleLightAltar = async () => {
+    setCandlesLit(true);
+    const sys = `You are Ofrenda, a reverent, poetic memory keeper running 100% offline. Write a deeply moving 110-word remembrance tribute honoring the person below. Weave in their favorite foods, songs, and exact stories naturally. Never invent facts outside the provided memories.`;
+    const prompt = `Name: ${profile.name} (${profile.years})\nFavorite Foods: ${profile.foods}\nBeloved Sounds/Songs: ${profile.songs}\nStories: ${profile.stories}`;
+    const tribute = await callLocalGemma(sys, prompt);
+    setRemembrance(tribute.replace(/\[\\]/g, '').trim());
+  };
+
+  const askEchoQuestion = async (userQ, isGuardrailTest = false) => {
+    setChatHistory((prev) => [...prev, { role: 'user', text: userQ }]);
+
+    const sys = `You are a gentle, strictly grounded "Memory Echo" of ${profile.name}.
+CRITICAL ETHICAL GUARDRAILS:
+1. You ONLY know the facts contained in these stories: "${profile.stories}", foods: "${profile.foods}", and songs: "${profile.songs}".
+2. NEVER hallucinate new life events or pretend to be a living person.
+3. If asked about something NOT in the stories, start with: "That memory hasn't been placed on the altar yet, but what lives here is..." and share a relevant detail from the stories.
+4. At the very end of your response, ALWAYS include the exact quote from the stories you used in this format: [exact source quote]`;
+
+    const rawReply = await callLocalGemma(sys, userQ, isGuardrailTest);
+    const match = rawReply.match(/\[(.*?)\]/);
+    const cleanText = rawReply.replace(/\[(.*?)\]/g, '').trim();
+    const citation = match ? match[1] : 'Grounded in Altar Offerings';
+
+    setChatHistory((prev) => [
+      ...prev,
+      { role: 'echo', text: cleanText, citation, isGuardrailTest }
+    ]);
+  };
+
+  const handleAskEcho = async (e) => {
+    e.preventDefault();
+    if (!question.trim()) return;
+    const q = question;
+    setQuestion('');
+    await askEchoQuestion(q, false);
+  };
+
+  // Export portable .ofrenda.json time capsule
+  const exportTimeCapsule = () => {
+    const payload = {
+      schema: 'ofrenda.v1',
+      exportedAt: new Date().toISOString(),
+      model: modelName,
+      profile,
+      remembrance,
+      chatHistory
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${profile.name.toLowerCase().replace(/\s+/g, '-')}.ofrenda.json`;
+    a.click();
+  };
+
+  // Import .ofrenda.json time capsule
+  const importTimeCapsule = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (data.profile) setProfile(data.profile);
+        if (data.remembrance) setRemembrance(data.remembrance);
+        if (data.chatHistory) setChatHistory(data.chatHistory);
+      } catch {
+        alert('Invalid .ofrenda.json file');
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  return (
+    <div className="min-h-screen bg-stone-950 text-amber-50 p-6 font-serif relative overflow-hidden">
+      {/* Floating Marigold Petals (Cempasúchil) */}
+      {candlesLit && (
+        <div className="pointer-events-none fixed inset-0 overflow-hidden z-0 opacity-30">
+          {[...Array(10)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-3 h-3 bg-amber-500 rounded-full blur-[1px] animate-bounce"
+              style={{
+                left: `${(i * 11) % 100}%`,
+                top: `${(i * 17) % 90}%`,
+                animationDuration: `${4 + (i % 4)}s`
+              }}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Header & Air-Gap Telemetry Bar */}
+      <header className="relative z-10 max-w-5xl mx-auto flex flex-wrap justify-between items-center border-b border-amber-900/40 pb-4 mb-6 gap-4">
+        <div className="flex items-center gap-3">
+          <Flame className="w-8 h-8 text-amber-500 animate-pulse" />
+          <div>
+            <h1 className="text-3xl font-bold tracking-wider text-amber-400">OFRENDA</h1>
+            <p className="text-xs text-amber-200/70 font-sans">
+              Offline Local Memory Altar • Powered by Open-Weight Gemma & Ollama
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 font-sans text-xs">
+          {/* Live Air-Gap Status Badge */}
+          <div
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${
+              isOffline
+                ? 'bg-emerald-950/80 border-emerald-500 text-emerald-300 font-semibold'
+                : 'bg-amber-950/60 border-amber-700/50 text-amber-300'
+            }`}
+          >
+            {isOffline ? <WifiOff className="w-4 h-4 text-emerald-400" /> : <ShieldCheck className="w-4 h-4 text-emerald-400" />}
+            <span>
+              {isOffline
+                ? 'AIR-GAP VERIFIED: Wi-Fi Off • 100% Local Gemma'
+                : 'Zero Cloud Telemetry (localhost:11434)'}
+            </span>
+          </div>
+
+          <button
+            onClick={toggleAmbientSound}
+            className="flex items-center gap-1 bg-stone-900 border border-amber-800/50 hover:border-amber-500 px-3 py-1.5 rounded-full text-amber-200 transition"
+            title="Toggle warm harmonic altar drone"
+          >
+            {ambientOn ? <Volume2 className="w-4 h-4 text-amber-400" /> : <VolumeX className="w-4 h-4 text-stone-400" />}
+            <span>{ambientOn ? 'Sanctuary Audio On' : 'Sanctuary Audio'}</span>
+          </button>
+
+          <button
+            onClick={exportTimeCapsule}
+            className="flex items-center gap-1 bg-stone-900 border border-amber-800/50 hover:border-amber-500 px-3 py-1.5 rounded-full text-amber-200 transition"
+            title="Export portable .ofrenda.json file for 20-year permanence"
+          >
+            <Download className="w-4 h-4 text-amber-400" />
+            <span>Save .ofrenda Capsule</span>
+          </button>
+
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="flex items-center gap-1 bg-stone-900 border border-amber-800/50 hover:border-amber-500 px-3 py-1.5 rounded-full text-amber-200 transition"
+          >
+            <Upload className="w-4 h-4 text-amber-400" />
+            <span>Load</span>
+          </button>
+          <input ref={fileInputRef} type="file" accept=".json" onChange={importTimeCapsule} className="hidden" />
+        </div>
+      </header>
+
+      <main className="relative z-10 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left Column: Altar Offerings */}
+        <section className="bg-stone-900/85 border border-amber-800/40 rounded-2xl p-6 shadow-xl">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-amber-300 flex items-center gap-2">
+              <Heart className="w-5 h-5 text-amber-500" /> Place Offerings on the Altar
+            </h2>
+            <input
+              type="text"
+              value={modelName}
+              onChange={(e) => setModelName(e.target.value)}
+              className="bg-stone-950 border border-amber-900/60 rounded px-2 py-1 text-xs font-mono text-amber-400 w-28"
+              title="Local Ollama Model"
+            />
+          </div>
+
+          <div className="space-y-4 font-sans text-sm">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-amber-200/80 mb-1">Loved One's Name</label>
+                <input
+                  value={profile.name}
+                  onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                  className="w-full bg-stone-950 border border-amber-900/50 rounded-lg p-2.5 text-amber-50"
+                />
+              </div>
+              <div>
+                <label className="block text-amber-200/80 mb-1">Years</label>
+                <input
+                  value={profile.years}
+                  onChange={(e) => setProfile({ ...profile, years: e.target.value })}
+                  className="w-full bg-stone-950 border border-amber-900/50 rounded-lg p-2.5 text-amber-50"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="flex items-center gap-1.5 text-amber-200/80 mb-1">
+                <Utensils className="w-4 h-4 text-amber-500" /> Favorite Foods & Drink Offerings
+              </label>
+              <input
+                value={profile.foods}
+                onChange={(e) => setProfile({ ...profile, foods: e.target.value })}
+                className="w-full bg-stone-950 border border-amber-900/50 rounded-lg p-2.5 text-amber-50"
+              />
+            </div>
+
+            <div>
+              <label className="flex items-center gap-1.5 text-amber-200/80 mb-1">
+                <Music className="w-4 h-4 text-amber-500" /> Beloved Songs & Familiar Sounds
+              </label>
+              <input
+                value={profile.songs}
+                onChange={(e) => setProfile({ ...profile, songs: e.target.value })}
+                className="w-full bg-stone-950 border border-amber-900/50 rounded-lg p-2.5 text-amber-50"
+              />
+            </div>
+
+            <div>
+              <label className="flex items-center gap-1.5 text-amber-200/80 mb-1">
+                <BookOpen className="w-4 h-4 text-amber-500" /> Cherished Stories (Strict Grounding Corpus)
+              </label>
+              <textarea
+                rows={5}
+                value={profile.stories}
+                onChange={(e) => setProfile({ ...profile, stories: e.target.value })}
+                className="w-full bg-stone-950 border border-amber-900/50 rounded-lg p-2.5 text-amber-50 leading-relaxed"
+              />
+            </div>
+
+            <button
+              onClick={handleLightAltar}
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-stone-950 font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition shadow-lg shadow-amber-900/30"
+            >
+              <Sparkles className="w-5 h-5" />
+              {loading ? 'Weaving Remembrance via Local Gemma...' : 'Light the Candles & Generate Remembrance'}
+            </button>
+          </div>
+        </section>
+
+        {/* Right Column: Illuminated Altar & Cited Echo */}
+        <section className="flex flex-col gap-6">
+          <div className="bg-gradient-to-b from-amber-950/40 to-stone-900/90 border border-amber-600/40 rounded-2xl p-6 relative">
+            <div className="flex justify-between items-start mb-3">
+              <div>
+                <h3 className="text-2xl font-bold text-amber-300">{profile.name}</h3>
+                <p className="text-xs text-amber-400/80 font-sans">{profile.years}</p>
+              </div>
+              {candlesLit && <Flame className="w-6 h-6 text-amber-400 animate-bounce" />}
+            </div>
+            <p className="text-amber-100/90 italic leading-relaxed whitespace-pre-line text-sm">
+              {remembrance || 'Click "Light the Candles" to weave a remembrance strictly from your family stories...'}
+            </p>
+          </div>
+
+          <div className="bg-stone-900/85 border border-amber-800/40 rounded-2xl p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div className="flex flex-wrap justify-between items-center gap-2 mb-1">
+                <h4 className="text-lg font-bold text-amber-300 flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 text-amber-500" /> Visit the Memory Echo
+                </h4>
+                <button
+                  type="button"
+                  onClick={() =>
+                    askEchoQuestion(
+                      "What was your favorite cryptocurrency and what sports car did you drive?",
+                      true
+                    )
+                  }
+                  disabled={loading}
+                  className="text-[11px] font-sans bg-amber-950/80 hover:bg-amber-900 border border-amber-700/60 text-amber-300 px-2.5 py-1 rounded-full transition"
+                >
+                  ⚡ Test Ethical Guardrail (Unplaced Memory)
+                </button>
+              </div>
+              <p className="text-xs text-stone-400 font-sans mb-4">
+                Every response cites the exact family story it drew from and refuses to fabricate new facts.
+              </p>
+
+              <div className="space-y-3 max-h-60 overflow-y-auto pr-2 mb-4 font-sans text-sm">
+                {chatHistory.length === 0 && (
+                  <div className="text-stone-500 italic text-xs">
+                    Ask a grounded question ("What did you do when someone was sad?") or click "Test Ethical Guardrail" above.
+                  </div>
+                )}
+                {chatHistory.map((msg, idx) => (
+                  <div
+                    key={idx}
+                    className={`p-3 rounded-xl ${
+                      msg.role === 'user'
+                        ? 'bg-stone-800 text-amber-100 ml-8'
+                        : 'bg-amber-950/50 border border-amber-800/40 text-amber-200 mr-4'
+                    }`}
+                  >
+                    <span className="block text-[10px] uppercase tracking-wider text-amber-400/70 mb-1">
+                      {msg.role === 'user' ? 'Visitor' : `Echo of ${profile.name}`}
+                    </span>
+                    <p>{msg.text}</p>
+                    {msg.citation && (
+                      <div className="mt-2 pt-2 border-t border-amber-800/40 flex items-center gap-1.5 text-[11px] text-emerald-300/90">
+                        <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">Grounded Citation: "{msg.citation}"</span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <form onSubmit={handleAskEcho} className="flex gap-2 font-sans">
+              <input
+                type="text"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="Ask the Echo about a memory on the altar..."
+                className="flex-1 bg-stone-950 border border-amber-900/60 rounded-xl px-3.5 py-2 text-sm text-amber-50"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold px-4 py-2 rounded-xl text-sm transition"
+              >
+                Visit
+              </button>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
+

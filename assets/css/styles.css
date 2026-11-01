@@ -1,0 +1,1202 @@
+    :root {
+      --bg-dark: #0a040e;
+      --curtain-deep: #1b0726;
+      --curtain-mid: #380f4f;
+      --curtain-light: #521973;
+      --gold-1: #ffeaa7;
+      --gold-2: #e1b12c;
+      --gold-3: #c59b27;
+      --gold-4: #8c6d12;
+      --gold-metallic: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+      --marigold: #ff8c00;
+      --marigold-glow: #ff5e00;
+      --cempasuchil: #ffa502;
+      --purple-neon: #d946ef;
+      --amber-neon: #f59e0b;
+      --card-bg: rgba(28, 14, 38, 0.88);
+      --card-border: rgba(225, 177, 44, 0.35);
+      --text: #f7ede2;
+      --text-mute: #c9b4cc;
+      --wood-tier: linear-gradient(180deg, #422214 0%, #2a150c 50%, #1a0b06 100%);
+      --wood-shelf: linear-gradient(90deg, #3d1f11, #5a301a 50%, #3d1f11);
+      --font-display: 'Cinzel Decorative', Georgia, serif;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Montserrat', system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Screen-reader only utility class */
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text);
+      font-family: var(--font-serif);
+      font-size: 19px;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient Night Sky & Spooky Moon Atmosphere */
+    .sky-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 50% 18%, #280f3d 0%, #150620 50%, #08020c 100%);
+      z-index: -10;
+      pointer-events: none;
+      transition: background 0.5s ease;
+    }
+
+    body.theme-halloween .sky-backdrop {
+      background: radial-gradient(circle at 50% 20%, #4a1900 0%, #200a02 45%, #070301 100%);
+    }
+
+    .moon {
+      position: fixed;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fffdf0 0%, #fffae0 45%, #f6e58d 80%, rgba(246, 229, 141, 0) 100%);
+      box-shadow: 0 0 70px rgba(255, 245, 190, 0.45), 0 0 130px rgba(225, 177, 44, 0.25);
+      opacity: 0.85;
+      z-index: -9;
+      pointer-events: none;
+      transition: all 0.5s ease;
+    }
+
+    /* Orange Halloween Harvest Moon (from Image 3: media_1793507127863_f5c77b94.jpg) */
+    body.theme-halloween .moon {
+      background: radial-gradient(circle, #fff9d6 0%, #ffaa00 30%, #ff5500 70%, #cc2a00 100%);
+      box-shadow: 0 0 100px rgba(255, 120, 0, 0.85), 0 0 180px rgba(255, 60, 0, 0.5);
+      opacity: 0.95;
+    }
+
+    /* Spooky Tree Silhouettes & Bats from Image 2 & 3 */
+    .spooky-elements-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 280px;
+      pointer-events: none;
+      z-index: -7;
+      display: none;
+    }
+    body.theme-halloween .spooky-elements-overlay {
+      display: block;
+    }
+
+    /* Carved Jack-o'-Lantern Pumpkin (from Image 2) */
+    .jack-o-lantern {
+      width: 68px;
+      height: 56px;
+      position: absolute;
+      bottom: 12px;
+      right: 24px;
+      z-index: 25;
+      filter: drop-shadow(0 0 15px rgba(255, 100, 0, 0.7));
+      animation: pumpkinGlow 2.5s infinite alternate ease-in-out;
+      display: none;
+    }
+    body.theme-halloween .jack-o-lantern {
+      display: block;
+    }
+    @keyframes pumpkinGlow {
+      0% { filter: drop-shadow(0 0 10px rgba(255, 100, 0, 0.5)); transform: scale(1); }
+      100% { filter: drop-shadow(0 0 24px rgba(255, 120, 0, 0.9)); transform: scale(1.03); }
+    }
+
+    .moon-clouds {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: radial-gradient(ellipse at 40% 60%, rgba(82, 25, 115, 0.35) 0%, transparent 60%),
+                  radial-gradient(ellipse at 65% 40%, rgba(56, 15, 79, 0.4) 0%, transparent 65%);
+      z-index: -8;
+      pointer-events: none;
+    }
+
+    /* Dual Neon Edge Glow from Image 1 */
+    .neon-border-left {
+      position: fixed;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, transparent, var(--purple-neon) 20%, var(--purple-neon) 80%, transparent);
+      box-shadow: 0 0 20px var(--purple-neon), 0 0 40px var(--purple-neon);
+      opacity: 0.6;
+      z-index: 50;
+      pointer-events: none;
+      animation: neonPulsePurple 4s infinite alternate ease-in-out;
+    }
+
+    .neon-border-right {
+      position: fixed;
+      right: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, transparent, var(--amber-neon) 20%, var(--amber-neon) 80%, transparent);
+      box-shadow: 0 0 20px var(--amber-neon), 0 0 40px var(--amber-neon);
+      opacity: 0.6;
+      z-index: 50;
+      pointer-events: none;
+      animation: neonPulseAmber 4s infinite alternate ease-in-out;
+    }
+
+    @keyframes neonPulsePurple {
+      0% { opacity: 0.4; filter: drop-shadow(0 0 10px var(--purple-neon)); }
+      100% { opacity: 0.85; filter: drop-shadow(0 0 25px var(--purple-neon)); }
+    }
+    @keyframes neonPulseAmber {
+      0% { opacity: 0.4; filter: drop-shadow(0 0 10px var(--amber-neon)); }
+      100% { opacity: 0.85; filter: drop-shadow(0 0 25px var(--amber-neon)); }
+    }
+
+    /* Grand Velvet Curtains with Gold Tieback Tassels from Image 5 */
+    .curtain {
+      position: fixed;
+      top: 0; bottom: 0;
+      width: 140px;
+      z-index: 40;
+      pointer-events: none;
+      filter: drop-shadow(5px 0 20px rgba(0,0,0,0.8));
+    }
+    .curtain-left {
+      left: 0;
+      background: linear-gradient(90deg, 
+        var(--curtain-deep) 0%, 
+        var(--curtain-mid) 35%, 
+        var(--curtain-light) 65%, 
+        var(--curtain-deep) 100%);
+      mask-image: linear-gradient(to right, black 70%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 70%, transparent 100%);
+    }
+    .curtain-right {
+      right: 0;
+      background: linear-gradient(-90deg, 
+        var(--curtain-deep) 0%, 
+        var(--curtain-mid) 35%, 
+        var(--curtain-light) 65%, 
+        var(--curtain-deep) 100%);
+      mask-image: linear-gradient(to left, black 70%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to left, black 70%, transparent 100%);
+    }
+    .curtain-tieback-left, .curtain-tieback-right {
+      position: fixed;
+      top: 42%;
+      width: 48px;
+      height: 120px;
+      z-index: 45;
+      pointer-events: none;
+    }
+    .curtain-tieback-left { left: 20px; }
+    .curtain-tieback-right { right: 20px; transform: scaleX(-1); }
+
+    /* Cempasúchil Marigold Bouquet in Clay Vase (from Image 5) */
+    .marigold-vase-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+    }
+    .marigold-bouquet {
+      width: 64px;
+      height: 60px;
+      position: relative;
+      margin-bottom: -10px;
+      z-index: 2;
+    }
+    .clay-vase {
+      width: 44px;
+      height: 62px;
+      background: radial-gradient(circle at 35% 35%, #d35400, #a04000 60%, #6e2c00 100%);
+      border-radius: 12px 12px 20px 20px;
+      border: 2px solid #562300;
+      position: relative;
+      box-shadow: inset -4px 0 8px rgba(0,0,0,0.4), 0 4px 10px rgba(0,0,0,0.6);
+    }
+    .clay-vase::before {
+      content: "";
+      position: absolute;
+      top: -6px; left: 50%; transform: translateX(-50%);
+      width: 32px; height: 8px;
+      background: #e67e22;
+      border-radius: 50%;
+      border: 2px solid #562300;
+    }
+    .clay-vase::after {
+      content: "";
+      position: absolute;
+      top: 20px; left: 6px; right: 6px;
+      height: 4px;
+      background: repeating-linear-gradient(90deg, #f39c12, #f39c12 4px, transparent 4px, transparent 8px);
+      opacity: 0.7;
+    }
+
+    /* Baroque Ornate Frame Corners */
+    .frame-corner {
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .corner-tl { top: -6px; left: -6px; }
+    .corner-tr { top: -6px; right: -6px; transform: scaleX(-1); }
+    .corner-bl { bottom: -6px; left: -6px; transform: scaleY(-1); }
+    .corner-br { bottom: -6px; right: -6px; transform: scale(-1); }
+
+    /* Papel Picado Festive Garland from Images 1 & 5 */
+    .papel-picado-garland {
+      position: relative;
+      width: 100%;
+      height: 90px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      overflow: hidden;
+      padding-top: 10px;
+      z-index: 30;
+      pointer-events: none;
+    }
+    .flag {
+      width: 68px;
+      height: 75px;
+      position: relative;
+      transform-origin: top center;
+      animation: flagSway 4s ease-in-out infinite alternate;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+    }
+    .flag:nth-child(even) { animation-duration: 3.2s; animation-delay: -1.5s; }
+    .flag:nth-child(3n) { animation-duration: 4.8s; animation-delay: -0.8s; }
+    .flag svg { width: 100%; height: 100%; }
+
+    @keyframes flagSway {
+      0% { transform: rotate(-3deg) skewX(-2deg); }
+      100% { transform: rotate(3deg) skewX(2deg); }
+    }
+
+    /* Main Container */
+    .viewport {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 10px 40px 100px;
+      position: relative;
+      z-index: 20;
+    }
+
+    /* Header Bar */
+    header {
+      text-align: center;
+      padding: 15px 10px 25px;
+      position: relative;
+    }
+    .title-banner {
+      display: inline-block;
+      position: relative;
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 5.5vw, 56px);
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      background: var(--gold-metallic);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 16px rgba(245, 166, 35, 0.45));
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .sub-title {
+      font-style: italic;
+      color: var(--gold-1);
+      font-size: 19px;
+      letter-spacing: 0.05em;
+      opacity: 0.9;
+    }
+    .top-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(42, 21, 53, 0.85);
+      border: 1px solid rgba(225, 177, 44, 0.35);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--gold-1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .status-badge.airgap-active {
+      background: rgba(6, 44, 28, 0.95);
+      border-color: #2ecc71;
+      color: #a7f3d0;
+      box-shadow: 0 0 16px rgba(46, 204, 113, 0.45);
+    }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #2ecc71;
+      box-shadow: 0 0 8px #2ecc71;
+    }
+    .status-dot.pulse {
+      animation: airgapBlink 1.5s infinite;
+    }
+    @keyframes airgapBlink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+    }
+
+    /* Verified Grounded Memory Citation Badge (Feature 1) */
+    .citation-badge {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(46, 204, 113, 0.35);
+      font-size: 13px;
+      font-family: var(--font-sans);
+      color: #a7f3d0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      word-break: break-word;
+    }
+    .citation-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background: #059669;
+      color: #fff;
+      font-size: 11px;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    /* Ethical Guardrail Test Button (Feature 5) */
+    .guardrail-test-btn {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      background: linear-gradient(135deg, rgba(88, 28, 12, 0.9), rgba(45, 14, 6, 0.9));
+      color: #fde047;
+      border: 1px solid rgba(245, 158, 11, 0.6);
+      border-radius: 18px;
+      padding: 5px 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .guardrail-test-btn:hover {
+      background: linear-gradient(135deg, rgba(120, 40, 16, 0.95), rgba(70, 20, 8, 0.95));
+      border-color: #f59e0b;
+      transform: translateY(-1px);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+    }
+    /* Festive Mexican Letter Tiles (from dia-de-muertos-festive.jpg) */
+    .festive-pretitle {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      color: var(--gold-2);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      text-shadow: 0 0 10px rgba(245, 166, 35, 0.6);
+    }
+    .festive-letter-tiles {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+    .tile {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(42px, 6vw, 58px);
+      height: clamp(50px, 7vw, 70px);
+      border-radius: 8px;
+      font-family: var(--font-display);
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4), inset 0 0 6px rgba(255,255,255,0.4);
+      border: 2px solid rgba(255,255,255,0.4);
+      transition: transform 0.2s ease;
+      cursor: default;
+    }
+    .tile:hover {
+      transform: scale(1.15) rotate(0deg) !important;
+      z-index: 5;
+    }
+    .tile-yellow { background: #f1c40f; transform: rotate(-4deg); }
+    .tile-cyan { background: #00cec9; transform: rotate(3deg); }
+    .tile-pink { background: #e84393; transform: rotate(-3deg); }
+    .tile-blue { background: #0984e3; transform: rotate(4deg); }
+    .tile-orange { background: #e67e22; transform: rotate(-2deg); }
+    .tile-purple { background: #9b59b6; transform: rotate(3deg); }
+    .tile-rose { background: #ff7675; transform: rotate(-4deg); }
+
+    /* Altar Folk Art Stickers from Canva collection */
+    .altar-sticker {
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.65));
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+    }
+    .altar-sticker:hover {
+      transform: scale(1.12) rotate(2deg);
+    }
+    .sticker-guitar {
+      width: 76px;
+      height: 145px;
+      position: absolute;
+      left: 28px;
+      bottom: 20px;
+      z-index: 18;
+      transform: rotate(-12deg);
+    }
+    .sticker-dog {
+      width: 90px;
+      height: 95px;
+      position: absolute;
+      right: 32px;
+      bottom: 18px;
+      z-index: 18;
+    }
+    .sticker-cat {
+      width: 70px;
+      height: 85px;
+      position: absolute;
+      left: 108px;
+      bottom: 18px;
+      z-index: 18;
+    }
+    .sticker-sombrero {
+      width: 92px;
+      height: 54px;
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 22;
+    }
+
+    /* Falling Cempasúchil Marigold Petals */
+    .petal-container {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .petal {
+      position: absolute;
+      background: radial-gradient(ellipse at 40% 40%, #ffa502 0%, #ff6300 70%, #d35400 100%);
+      border-radius: 50% 0 50% 50%;
+      opacity: 0.8;
+      box-shadow: 0 0 8px rgba(255, 122, 26, 0.6);
+      animation: floatDown linear infinite;
+    }
+    @keyframes floatDown {
+      0% { transform: translateY(-30px) rotate(0deg) translateX(0); opacity: 0; }
+      15% { opacity: 0.85; }
+      85% { opacity: 0.85; }
+      100% { transform: translateY(105vh) rotate(540deg) translateX(80px); opacity: 0; }
+    }
+
+    .btn-gold {
+      background: var(--gold-metallic);
+      color: #241103;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 22px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 4px 15px rgba(225, 177, 44, 0.35);
+      transition: all 0.25s ease;
+    }
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(245, 166, 35, 0.55);
+    }
+    .btn-glass {
+      background: rgba(30, 15, 42, 0.7);
+      color: var(--gold-1);
+      border: 1px solid rgba(225, 177, 44, 0.4);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-glass:hover {
+      background: rgba(56, 25, 79, 0.85);
+      border-color: var(--gold-2);
+      color: #fff;
+    }
+
+    /* THE GRAND 3-TIERED OFRENDA ALTAR (From Image 5) */
+    .altar-architectural {
+      position: relative;
+      margin: 15px auto 40px;
+      background: radial-gradient(ellipse at 50% 30%, rgba(68, 25, 94, 0.35) 0%, rgba(15, 6, 22, 0.95) 85%);
+      border: 2px solid rgba(225, 177, 44, 0.35);
+      border-radius: 20px;
+      padding: 30px 24px 45px;
+      box-shadow: 0 0 50px rgba(225, 177, 44, 0.15), inset 0 0 40px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+    }
+
+    /* Ambient Marigold Garland & Calaveras Flanking Altar */
+    .altar-side-skulls {
+      position: absolute;
+      top: 55px;
+      width: 100%;
+      left: 0;
+      padding: 0 30px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .skull-guardian {
+      width: 90px;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.7));
+      opacity: 0.95;
+    }
+    .skull-left { transform: rotate(4deg); }
+    .skull-right { transform: rotate(-4deg) scaleX(-1); }
+
+    /* Altar Tier 1: The Grand Baroque Golden Frame */
+    .altar-tier-top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+      z-index: 15;
+      margin-bottom: 25px;
+    }
+
+    .shrine-outer-frame {
+      position: relative;
+      padding: 14px;
+      background: var(--gold-metallic);
+      border-radius: 14px;
+      box-shadow: 
+        0 0 35px rgba(245, 166, 35, 0.5),
+        0 15px 35px rgba(0,0,0,0.8),
+        inset 0 0 10px rgba(0,0,0,0.5);
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .shrine-outer-frame::before {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      border: 2px solid rgba(255, 235, 160, 0.5);
+      border-radius: 18px;
+      pointer-events: none;
+    }
+    .shrine-inner-canvas {
+      width: 240px;
+      height: 290px;
+      background: #14081b;
+      border: 3px solid #634311;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+    }
+    .shrine-inner-canvas img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .shrine-inner-canvas:hover img {
+      transform: scale(1.03);
+    }
+    .shrine-placeholder {
+      text-align: center;
+      padding: 20px;
+      color: var(--gold-1);
+    }
+    .shrine-placeholder .icon {
+      font-size: 54px;
+      margin-bottom: 10px;
+      display: inline-block;
+      animation: gentleFloat 3s infinite ease-in-out alternate;
+    }
+    @keyframes gentleFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-8px); }
+    }
+
+    /* Candle with animated flame */
+    .candle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+    .candle-flame {
+      width: 14px;
+      height: 26px;
+      background: radial-gradient(ellipse at 50% 80%, #ffffff 0%, #fff7a0 25%, #ff9f1a 60%, #ff4714 90%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      box-shadow: 0 0 16px #ff9f1a, 0 0 35px #ff5e00, 0 0 60px rgba(255, 94, 0, 0.4);
+      animation: flameMotion 1.4s infinite alternate ease-in-out;
+      transform-origin: 50% 90%;
+      margin-bottom: 2px;
+    }
+    @keyframes flameMotion {
+      0% { transform: scale(1) rotate(-1deg) skewX(-1deg); opacity: 0.95; }
+      50% { transform: scale(1.12, 0.92) rotate(2deg) skewX(2deg); opacity: 1; }
+      100% { transform: scale(0.95, 1.05) rotate(-2deg) skewX(-1deg); opacity: 0.92; }
+    }
+    .candle-body {
+      width: 18px;
+      height: 48px;
+      background: linear-gradient(90deg, #f3eed9 0%, #fffcf2 40%, #d8caa7 100%);
+      border-radius: 3px 3px 6px 6px;
+      box-shadow: inset -2px 0 5px rgba(0,0,0,0.25), 0 4px 8px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .candle-body::before {
+      content: "";
+      position: absolute;
+      top: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 6px;
+      background: #333;
+    }
+
+    /* Copal Incense Burner & Rising Smoke from Image 5 */
+    .incense-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .smoke-curl {
+      position: absolute;
+      bottom: 28px;
+      width: 20px;
+      height: 70px;
+      pointer-events: none;
+      opacity: 0.65;
+      animation: smokeRise 3.5s infinite linear;
+    }
+    @keyframes smokeRise {
+      0% { transform: translateY(0) scaleX(1) scaleY(1); opacity: 0.7; }
+      50% { transform: translateY(-30px) scaleX(1.4) scaleY(1.3) translateX(6px); opacity: 0.4; }
+      100% { transform: translateY(-65px) scaleX(2) scaleY(1.6) translateX(-8px); opacity: 0; }
+    }
+
+    /* Mexican Floral Embroidered Runner from Image 5 */
+    .mexican-runner {
+      width: 100%;
+      height: 24px;
+      background: linear-gradient(90deg, #0984e3, #00cec9, #d63031, #e17055, #fdcb6e, #6c5ce7, #0984e3);
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      position: relative;
+      margin: 15px 0 25px;
+    }
+    .mexican-runner::after {
+      content: "";
+      position: absolute;
+      bottom: -6px; left: 0; right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(45deg, #f5cd79, #f5cd79 8px, transparent 8px, transparent 16px);
+    }
+
+    /* Altar Shelf Tiers (Tier 2 & Tier 3) */
+    .altar-tier-shelf {
+      position: relative;
+      background: var(--wood-tier);
+      border-top: 4px solid #774320;
+      border-bottom: 2px solid #1a0b06;
+      border-radius: 8px;
+      padding: 18px 20px 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255, 215, 120, 0.2);
+    }
+    .altar-tier-label {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--gold-2);
+      text-align: center;
+      margin-bottom: 12px;
+      opacity: 0.85;
+    }
+
+    /* Loved Ones Grid on the Altar Tier */
+    .people-shelf-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 24px;
+      min-height: 140px;
+    }
+
+    .person-offering {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s ease;
+      width: 110px;
+    }
+    .person-offering:hover {
+      transform: translateY(-6px);
+    }
+    .person-frame {
+      width: 82px;
+      height: 98px;
+      border: 3px solid var(--gold-3);
+      border-radius: 8px 8px 30px 30px;
+      overflow: hidden;
+      background: #1c0b24;
+      box-shadow: 0 0 16px rgba(245, 166, 35, 0.4), 0 8px 16px rgba(0,0,0,0.7);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .person-offering.active .person-frame {
+      border-color: #fff;
+      box-shadow: 0 0 28px rgba(255, 122, 26, 0.9), 0 0 40px var(--gold-2);
+      transform: scale(1.08);
+    }
+    .person-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .person-name {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--gold-1);
+      text-align: center;
+      margin-top: 8px;
+      text-shadow: 0 2px 4px #000;
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .person-relation {
+      font-size: 13px;
+      font-style: italic;
+      color: var(--text-mute);
+      text-align: center;
+    }
+
+    /* Active Loved One Centerpiece Console */
+    .shrine-console {
+      background: linear-gradient(180deg, rgba(45, 18, 62, 0.96) 0%, rgba(22, 8, 32, 0.98) 100%);
+      border: 2px solid rgba(225, 177, 44, 0.55);
+      border-radius: 20px;
+      padding: 32px 28px;
+      margin: 35px 0;
+      box-shadow: 0 0 45px rgba(225, 177, 44, 0.22), 0 20px 45px rgba(0,0,0,0.85);
+      position: relative;
+      animation: fadeIn 0.35s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .shrine-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(225, 177, 44, 0.35);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .shrine-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      color: #ffeaa7;
+      letter-spacing: 0.06em;
+      text-shadow: 0 2px 12px rgba(245, 166, 35, 0.5);
+    }
+    .shrine-subtitle {
+      font-size: 18px;
+      font-style: italic;
+      color: #f5cd79;
+      margin-top: 4px;
+    }
+
+    /* Offerings pill list (foods, songs) */
+    .offerings-basket {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .offering-pill {
+      background: rgba(74, 30, 102, 0.9);
+      border: 1px solid rgba(225, 177, 44, 0.5);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 16px;
+      color: #fff9ed;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    /* Shrine Actions Toolbar */
+    .shrine-toolbar {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+    }
+
+    /* Remembrance Scroll Box */
+    .remembrance-card {
+      background: linear-gradient(135deg, rgba(46, 20, 58, 0.95), rgba(28, 11, 38, 0.95));
+      border: 1px solid rgba(245, 166, 35, 0.55);
+      border-left: 5px solid var(--gold-2);
+      border-radius: 14px;
+      padding: 24px;
+      margin: 20px 0;
+      position: relative;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+    }
+    .remembrance-text {
+      font-size: 21px;
+      line-height: 1.7;
+      color: #fff9ed;
+      white-space: pre-wrap;
+    }
+    .remembrance-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(225, 177, 44, 0.3);
+      font-size: 14px;
+      color: var(--gold-1);
+    }
+
+    /* Conversational Echo Chat Window */
+    .echo-portal {
+      background: rgba(16, 6, 24, 0.96);
+      border: 1.5px solid rgba(225, 177, 44, 0.45);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 26px;
+      box-shadow: inset 0 0 35px rgba(0,0,0,0.7);
+    }
+    .echo-portal-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      color: #ffeaa7;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-shadow: 0 0 12px rgba(245, 166, 35, 0.5);
+    }
+    .echo-disclaimer {
+      font-size: 15px;
+      color: var(--text-mute);
+      margin-bottom: 18px;
+      font-style: italic;
+    }
+    .chat-stream {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 12px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .chat-bubble {
+      max-width: 82%;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-size: 18px;
+      line-height: 1.6;
+      position: relative;
+      word-break: break-word;
+    }
+    .bubble-user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #5c2077, #3e1252);
+      color: #fff;
+      border: 1px solid rgba(217, 70, 239, 0.5);
+      border-bottom-right-radius: 2px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+    }
+    .bubble-echo {
+      align-self: flex-start;
+      background: linear-gradient(135deg, #361a48, #260f34);
+      border-left: 4px solid var(--gold-2);
+      border: 1px solid rgba(225, 177, 44, 0.5);
+      border-bottom-left-radius: 2px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.6);
+      color: #fffaf0;
+    }
+    .bubble-voice-btn {
+      background: none;
+      border: none;
+      color: var(--gold-2);
+      cursor: pointer;
+      font-size: 18px;
+      margin-left: 10px;
+      vertical-align: middle;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+    }
+    .bubble-voice-btn:hover { opacity: 1; transform: scale(1.15); }
+
+    .chat-input-bar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .input-field {
+      flex: 1;
+      background: rgba(14, 5, 20, 0.95);
+      border: 1.5px solid rgba(225, 177, 44, 0.45);
+      border-radius: 12px;
+      padding: 13px 18px;
+      font-family: inherit;
+      font-size: 18px;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-field:focus {
+      border-color: var(--gold-2);
+      box-shadow: 0 0 16px rgba(245, 166, 35, 0.5);
+    }
+      border-left: 3px solid var(--gold-2);
+      border: 1px solid rgba(225, 177, 44, 0.35);
+      border-bottom-left-radius: 2px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      color: #fff9ed;
+    }
+    .bubble-voice-btn {
+      background: none;
+      border: none;
+      color: var(--gold-2);
+      cursor: pointer;
+      font-size: 16px;
+      margin-left: 8px;
+      vertical-align: middle;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .bubble-voice-btn:hover { opacity: 1; transform: scale(1.1); }
+
+    .chat-input-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .input-field {
+      flex: 1;
+      background: rgba(14, 5, 20, 0.85);
+      border: 1px solid rgba(225, 177, 44, 0.4);
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-family: inherit;
+      font-size: 17px;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-field:focus {
+      border-color: var(--gold-2);
+      box-shadow: 0 0 12px rgba(245, 166, 35, 0.35);
+    }
+
+    /* Modal / Dialogue Drawers */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(5, 2, 8, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-box {
+      background: radial-gradient(circle at 50% 10%, #2f123d 0%, #170721 80%);
+      border: 2px solid var(--gold-3);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 620px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 30px 28px;
+      box-shadow: 0 0 50px rgba(245, 166, 35, 0.3), 0 20px 40px rgba(0,0,0,0.9);
+      position: relative;
+      transform: scale(0.95);
+      transition: transform 0.25s ease;
+    }
+    .modal-overlay.active .modal-box {
+      transform: scale(1);
+    }
+    .modal-close {
+      position: absolute;
+      top: 18px; right: 20px;
+      background: none;
+      border: none;
+      color: var(--gold-1);
+      font-size: 26px;
+      cursor: pointer;
+    }
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      color: var(--gold-1);
+      margin-bottom: 8px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-2);
+      margin-bottom: 6px;
+    }
+    textarea.input-field {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    /* Compare Matrix */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 16px 0;
+    }
+    @media (max-width: 700px) {
+      .compare-grid { grid-template-columns: 1fr; }
+      .curtain { display: none; }
+      .viewport { padding: 10px 16px 60px; }
+    }
+    .compare-column {
+      background: rgba(22, 9, 30, 0.85);
+      border: 1px solid rgba(225, 177, 44, 0.3);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .compare-header {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold-2);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Recording Indicator */
+    .recording-pulse {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #e74c3c;
+      box-shadow: 0 0 10px #e74c3c;
+      animation: recBlink 1s infinite;
+      margin-right: 6px;
+    }
+    @keyframes recBlink {
+      50% { opacity: 0.2; }
+    }
+
+    /* Error Toast */
+    #err-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #c0392b;
+      color: #fff;
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      z-index: 200;
+      display: none;
+    }
+
+    /* Hidden Utility */
+    .hidden { display: none !important; }

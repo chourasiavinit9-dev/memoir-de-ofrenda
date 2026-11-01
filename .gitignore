@@ -1,0 +1,35 @@
+# ── Sacred Family Data ───────────────────────────────────────────────────────
+# Keep family photos and memories safe on your device.
+# Only track pristine default presets in the repo.
+ofrenda_data/photos/*
+!ofrenda_data/photos/.gitkeep
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+*.db
+*.db-*
+
+# ── Node (echo-agent) ────────────────────────────────────────────────────────
+node_modules/
+echo-agent/node_modules/
+echo-agent/.env
+
+# ── OS & Editor Artifacts ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# ── Test Artifacts ───────────────────────────────────────────────────────────
+.pytest_cache/
+htmlcov/
+.coverage
+
+# ── Backups & Scratches ──────────────────────────────────────────────────────
+*.bak
+*.orig
