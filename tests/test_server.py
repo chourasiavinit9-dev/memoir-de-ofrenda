@@ -196,3 +196,11 @@ def test_chat_input_has_aria_label():
     idx = html.index('id="chat-user-input"')
     snippet = html[idx-20:idx+200]
     assert 'aria-label' in snippet, "chat-user-input must have aria-label"
+
+def test_altar_has_upload_photo_controls():
+    html_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "index.html")
+    html = open(html_path).read()
+    assert 'id="altar-upload-photo-btn"' in html, "Altar header must have Upload Image button"
+    assert 'id="altar-photo-input"' in html, "Global altar photo file input must exist"
+    assert 'id="new-photo-input"' in html, "Add person modal must have photo input"
+    assert 'id="frame-upload-badge"' in html, "Centerpiece must have upload badge"

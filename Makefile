@@ -22,7 +22,7 @@ help:
 	@echo "  make setup        Pull local Ollama model ($(MODEL))"
 	@echo "  make run          Start server on http://localhost:$(PORT)"
 	@echo "  make dev          Start server with pre-flight checks"
-	@echo "  make test         Execute automated test suite (30 tests)"
+	@echo "  make test         Execute automated test suite (31 tests)"
 	@echo "  make video        Record a 35s demo showcase video (macOS)"
 	@echo "  make open         Open altar in your default browser"
 	@echo "  make echo-agent   Start optional Mastra memory agent"

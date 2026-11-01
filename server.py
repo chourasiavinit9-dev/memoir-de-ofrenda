@@ -348,8 +348,12 @@ class H(BaseHTTPRequestHandler):
             if self.path == "/api/photo":
                 import base64
                 (PHOTOS / slug(d["id"])).write_bytes(base64.b64decode(d["image"]))
-                text = ollama([{"role": "user", "content": CAPTION_PROMPT, "images": [d["image"]]}])
-                return self._send(200, {"caption": text})
+                caption = "A cherished family portrait resting on the altar."
+                try:
+                    caption = ollama([{"role": "user", "content": CAPTION_PROMPT, "images": [d["image"]]}])
+                except Exception:
+                    pass
+                return self._send(200, {"caption": caption, "saved": True})
             self._send(404, {"error": "not found"})
         except urllib.error.URLError:
             self._send(502, {"error": f"Cannot reach Ollama at {OLLAMA}. Run: ollama serve && ollama pull {MODEL}"})

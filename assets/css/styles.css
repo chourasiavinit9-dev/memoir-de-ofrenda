@@ -647,6 +647,7 @@
       justify-content: center;
       align-items: center;
       box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+      cursor: pointer;
     }
     .shrine-inner-canvas img {
       width: 100%;
@@ -657,6 +658,31 @@
     }
     .shrine-inner-canvas:hover img {
       transform: scale(1.03);
+    }
+    .frame-upload-badge {
+      position: absolute;
+      bottom: 10px;
+      background: rgba(20, 8, 27, 0.88);
+      border: 1px solid var(--gold-2);
+      color: var(--gold-1);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      opacity: 0.9;
+      transition: all 0.25s ease;
+      z-index: 10;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+    .shrine-inner-canvas:hover .frame-upload-badge {
+      opacity: 1;
+      background: var(--gold-metallic);
+      color: #1a0826;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(245, 166, 35, 0.5);
     }
     .shrine-placeholder {
       text-align: center;
@@ -810,6 +836,25 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
+    }
+    .person-frame-upload-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(18, 6, 26, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--gold-1);
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      backdrop-filter: blur(2px);
+      z-index: 5;
+    }
+    .person-frame:hover .person-frame-upload-overlay {
+      opacity: 1;
+      transform: scale(1.05);
     }
     .person-offering.active .person-frame {
       border-color: #fff;

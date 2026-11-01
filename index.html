@@ -180,6 +180,14 @@
                class="hidden" aria-label="Import time capsule file"
                onchange="importTimeCapsuleVault(this)">
 
+        <button class="btn-glass" id="altar-upload-photo-btn" onclick="triggerAltarPhotoUpload()"
+                aria-label="Upload an image to the altar"
+                title="Upload a portrait photo to the altar">
+          <span aria-hidden="true">📷</span> Upload Image
+        </button>
+        <input type="file" id="altar-photo-input" accept="image/*" class="hidden"
+               aria-label="Upload photo to altar" onchange="handleAltarPhotoSelected(this)">
+
         <button class="btn-gold" id="theme-toggle-btn" onclick="toggleHalloweenTheme()"
                 aria-label="Toggle between Halloween orange and Día de los Muertos purple theme">
           <span id="theme-btn-label">🎃 Orange Halloween Mode</span>
@@ -297,13 +305,16 @@
               <circle cx="12" cy="12" r="3" fill="#bf953f"/>
             </svg>
 
-            <div class="shrine-inner-canvas" id="centerpiece-canvas">
+            <div class="shrine-inner-canvas" id="centerpiece-canvas" onclick="triggerCenterpiecePhotoUpload()" title="Click to upload or update portrait photo on the altar" role="button" tabindex="0" aria-label="Centerpiece portrait photo. Click to upload or change image.">
               <div class="shrine-placeholder" id="empty-shrine-msg">
                 <span class="icon">🌼</span>
                 <div style="font-weight: 600; font-size: 20px;">Light a candle</div>
-                <div style="font-size: 14px; color: var(--text-mute); margin-top: 6px;">Select a loved one below or add someone new to place them on the altar.</div>
+                <div style="font-size: 14px; color: var(--text-mute); margin-top: 6px;">Select a loved one below or click here to upload a photo.</div>
               </div>
               <img id="centerpiece-img" class="hidden" alt="Loved One Portrait">
+              <div class="frame-upload-badge" id="frame-upload-badge" aria-hidden="true">
+                📷 Upload Photo
+              </div>
             </div>
           </div>
 
@@ -589,6 +600,19 @@
       <div class="form-group">
         <label for="new-stories">Stories & Memories (the more specific, the better)</label>
         <textarea class="input-field" id="new-stories" aria-label="Stories and memories" placeholder="Tell the stories you cherish: their laughter, moments you shared, the advice they gave you..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="new-photo-input">📷 Portrait Photo (Optional)</label>
+        <input type="file" id="new-photo-input" accept="image/*" class="input-field" aria-label="Upload portrait photo" onchange="previewNewPersonPhoto(this)">
+        <div id="new-photo-preview-box" class="hidden" style="margin-top: 10px; display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: rgba(0,0,0,0.35); border-radius: 8px; border: 1px solid rgba(225, 177, 44, 0.3);">
+          <img id="new-photo-preview-img" src="" alt="Photo preview" style="width: 48px; height: 58px; object-fit: cover; border-radius: 6px; border: 1.5px solid var(--gold-2);">
+          <div style="flex: 1; font-size: 13px; color: var(--gold-1);">
+            <div id="new-photo-filename" style="font-weight: 600; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">photo.jpg</div>
+            <div style="color: var(--text-mute); font-size: 12px;">Will be placed on the altar</div>
+          </div>
+          <button type="button" class="btn-glass" style="padding: 4px 8px; font-size: 12px;" onclick="clearNewPersonPhoto()">✕ Remove</button>
+        </div>
       </div>
 
       <div style="text-align: right; margin-top: 20px;">

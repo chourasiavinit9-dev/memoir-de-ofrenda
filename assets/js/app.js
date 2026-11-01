@@ -111,10 +111,11 @@
             <div class="candle-flame"></div>
             <div class="candle-body" style="height: 20px; width: 10px;"></div>
           </div>
-          <div class="person-frame">
+          <div class="person-frame" title="Click to upload portrait photo for ${escapeHtml(p.name)}" onclick="triggerPersonPhotoUpload(event, '${p.id}')">
             ${p.has_photo ? 
               `<img src="/photo/${p.id}?t=${Date.now()}" alt="${escapeHtml(p.name)}">` : 
               `<span style="font-size: 32px;">🌼</span>`}
+            <div class="person-frame-upload-overlay" aria-hidden="true" title="Upload portrait photo">📷</div>
           </div>
           <div class="person-name">${escapeHtml(p.name)}</div>
           <div class="person-relation">${escapeHtml(p.relation || '')}</div>
@@ -196,7 +197,20 @@
 
       try {
         const saved = await api('/api/person', { name, relation, foods, songs, stories });
+        
+        // If a photo was selected in the add-modal, upload it
+        const photoInput = $('new-photo-input');
+        if (photoInput && photoInput.files && photoInput.files[0]) {
+          try {
+            const b64 = await compressImage(photoInput.files[0]);
+            await api('/api/photo', { id: saved.id, image: b64 });
+          } catch (photoErr) {
+            console.warn('Photo upload warning:', photoErr);
+          }
+        }
+
         ['new-name', 'new-relation', 'new-foods', 'new-songs', 'new-stories'].forEach(id => $(id).value = '');
+        clearNewPersonPhoto();
         closeModal('add-modal');
         await loadAltarData();
         selectPerson(saved.id);
@@ -274,6 +288,92 @@
         `;
       } catch (e) {
         grid.innerHTML = `<div style="color: #ff8a8a; grid-column: span 2;">${escapeHtml(e.message)}</div>`;
+      }
+    }
+
+    let targetUploadPersonId = null;
+
+    function previewNewPersonPhoto(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      const box = $('new-photo-preview-box');
+      const img = $('new-photo-preview-img');
+      const filename = $('new-photo-filename');
+      if (box && img && filename) {
+        img.src = URL.createObjectURL(file);
+        filename.textContent = file.name;
+        box.classList.remove('hidden');
+      }
+    }
+
+    function clearNewPersonPhoto() {
+      const input = $('new-photo-input');
+      if (input) input.value = '';
+      const box = $('new-photo-preview-box');
+      if (box) box.classList.add('hidden');
+    }
+
+    function triggerAltarPhotoUpload() {
+      if (currentPerson) {
+        targetUploadPersonId = currentPerson.id;
+        $('altar-photo-input').click();
+      } else if (people.length > 0) {
+        selectPerson(people[0].id);
+        targetUploadPersonId = people[0].id;
+        $('altar-photo-input').click();
+      } else {
+        openModal('add-modal');
+      }
+    }
+
+    function triggerCenterpiecePhotoUpload() {
+      if (currentPerson) {
+        targetUploadPersonId = currentPerson.id;
+        $('altar-photo-input').click();
+      } else if (people.length > 0) {
+        selectPerson(people[0].id);
+        targetUploadPersonId = people[0].id;
+        $('altar-photo-input').click();
+      } else {
+        openModal('add-modal');
+      }
+    }
+
+    function triggerPersonPhotoUpload(event, personId) {
+      if (event) event.stopPropagation();
+      targetUploadPersonId = personId;
+      selectPerson(personId);
+      $('altar-photo-input').click();
+    }
+
+    async function handleAltarPhotoSelected(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      const personId = targetUploadPersonId || (currentPerson ? currentPerson.id : null);
+      if (!personId) {
+        showError('Please select someone on the altar first.');
+        return;
+      }
+
+      const box = $('photo-caption-box');
+      const content = $('photo-caption-content');
+      if (box && content) {
+        box.classList.remove('hidden');
+        content.textContent = 'Placing portrait photo on the altar...';
+      }
+
+      try {
+        const b64 = await compressImage(file);
+        const res = await api('/api/photo', { id: personId, image: b64 });
+        await loadAltarData();
+        selectPerson(personId);
+        if (box && content && res && res.caption) {
+          content.textContent = res.caption;
+        }
+      } catch (e) {
+        showError('Photo upload failed: ' + e.message);
+      } finally {
+        input.value = '';
       }
     }
 

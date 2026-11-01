@@ -95,3 +95,4 @@ first.save(
 file_size_mb = os.path.getsize(OUTPUT_GIF) / (1024 * 1024)
 print(f"✅ Animated Demo Showcase created successfully!")
 print(f"📁 Output: {OUTPUT_GIF} ({file_size_mb:.2f} MB)")
+
