@@ -1,34 +1,28 @@
 #!/bin/bash
 # ── record_showcase.sh ────────────────────────────────────────────────────────
-# Records a high-definition video walkthrough of Ofrenda using native macOS screencapture.
+# Automatically captures high-definition walkthrough frames using Headless Chrome
+# and compiles them into docs/screenshots/ofrenda_showcase.gif with branded caption overlays.
 
-DURATION=${1:-35}
-OUTPUT_FILE="docs/screenshots/ofrenda_showcase.mov"
+set -e
 
 echo "=========================================================="
-echo "🎬 Recording Ofrenda Video Walkthrough (${DURATION}s)"
+echo "🎬 Generating Ofrenda Animated Demo Showcase"
 echo "=========================================================="
-echo "1. Opening http://localhost:8000 in your browser..."
-open "http://localhost:8000"
-sleep 2
 
-echo "2. Recording begins in 3 seconds. Focus your browser window!"
-sleep 3
-echo "🔴 RECORDING NOW (${DURATION} seconds)..."
-echo "👉 Walkthrough checklist:"
-echo "   - Click on Dadu (The Midnight Radio Mender)"
-echo "   - Click '⚡ Test Ethical Guardrail'"
-echo "   - Highlight the emerald 'Verified Memory Citation' badge"
-echo "   - Click the 'Zero Cloud / Air-Gap' pill in the header"
-echo "   - Click '💾 Save .ofrenda' to export the time capsule"
-
-/usr/sbin/screencapture -v -V "${DURATION}" -k "${OUTPUT_FILE}"
-
-if [ -f "${OUTPUT_FILE}" ]; then
-  echo ""
-  echo "✅ Video saved successfully to: ${OUTPUT_FILE}"
-  echo "Open with QuickTime to review: open ${OUTPUT_FILE}"
-else
-  echo "❌ Recording was interrupted or cancelled."
+# Ensure server is running
+if ! curl -sf http://localhost:8000/api/people > /dev/null; then
+  echo "⚠️  Starting Ofrenda server in background on port 8000..."
+  python3 server.py &
+  sleep 2
 fi
 
+echo "1. Capturing high-resolution browser frames via Chrome DevTools Protocol..."
+node scripts/record_demo.mjs
+
+echo "2. Compiling and optimizing animated demo showcase..."
+python3 scripts/make_demo_gif.py
+
+echo ""
+echo "=========================================================="
+echo "✅ Demo Showcase ready at: docs/screenshots/ofrenda_showcase.gif"
+echo "=========================================================="

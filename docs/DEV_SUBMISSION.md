@@ -34,6 +34,8 @@ A local, open-weight **Gemma model (via Ollama)** then powers two sacred interac
 
 Experience the live architectural altar running locally:
 
+![Memoir de Ofrenda Live Walkthrough](https://raw.githubusercontent.com/chourasiavinit9-dev/memoir-de-ofrenda/main/docs/screenshots/ofrenda_showcase.gif)
+
 {% github chourasiavinit9-dev/memoir-de-ofrenda %}
 
 * **Repository:** [https://github.com/chourasiavinit9-dev/memoir-de-ofrenda](https://github.com/chourasiavinit9-dev/memoir-de-ofrenda)

@@ -4,6 +4,9 @@
 ofrenda_data/photos/*
 !ofrenda_data/photos/.gitkeep
 
+# ── Screenshots & Showcase ──────────────────────────────────────────────────
+docs/screenshots/frames/
+
 # ── Python ───────────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
