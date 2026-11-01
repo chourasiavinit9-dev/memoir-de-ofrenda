@@ -7,6 +7,7 @@
 [![Privacy](https://img.shields.io/badge/Privacy-100%25%20Local%20·%20Air--Gapped-brightgreen?style=for-the-badge)](#why-open-weight-ai-was-not-optional)
 [![Tests](https://img.shields.io/badge/Tests-30%20Passing%20·%200.03s-success?style=for-the-badge)](./tests/)
 [![Python](https://img.shields.io/badge/Python-3.9%20|%203.10%20|%203.11%20|%203.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![DEV Submission](https://img.shields.io/badge/DEV.to-Read%20Submission-0A0A0A?style=for-the-badge&logo=devdotto)](https://dev.to/chourasiavinit9/memoir-de-ofrenda-a-local-first-dia-de-los-muertos-memory-altar-ghost-in-the-machine-3d29)
 [![Hacktoberfest](https://img.shields.io/badge/%23hf26challenge-Ghost%20in%20the%20Machine-orange?style=for-the-badge)](https://dev.to/challenges/hacktoberfest-week4-2026-10-26)
 
 <br/>

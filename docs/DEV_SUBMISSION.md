@@ -1,6 +1,6 @@
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 4: Ghost in the Machine](https://dev.to/challenges/hacktoberfest-week4-2026-10-26)*
 
-> **DEV Draft Article:** [https://dev.to/chourasiavinit9/memoir-de-ofrenda-a-local-first-dia-de-los-muertos-memory-altar-ghost-in-the-machine-5ai5-temp-slug-4493887/edit](https://dev.to/chourasiavinit9/memoir-de-ofrenda-a-local-first-dia-de-los-muertos-memory-altar-ghost-in-the-machine-5ai5-temp-slug-4493887/edit)
+> **Live DEV Article:** [https://dev.to/chourasiavinit9/memoir-de-ofrenda-a-local-first-dia-de-los-muertos-memory-altar-ghost-in-the-machine-3d29](https://dev.to/chourasiavinit9/memoir-de-ofrenda-a-local-first-dia-de-los-muertos-memory-altar-ghost-in-the-machine-3d29)
 
 ## What I Built
 
