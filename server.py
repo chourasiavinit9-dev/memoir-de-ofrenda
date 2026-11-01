@@ -10,6 +10,22 @@ DATA = HERE / "ofrenda_data"
 DATA.mkdir(exist_ok=True)
 PHOTOS = DATA / "photos"
 PHOTOS.mkdir(exist_ok=True)
+
+# Auto-load .env from directory if present (pure stdlib, zero dependencies)
+env_file = HERE / ".env"
+if env_file.exists():
+    try:
+        for line in env_file.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, v = line.split("=", 1)
+                k = k.strip()
+                v = v.strip().strip('"').strip("'")
+                if k and k not in os.environ:
+                    os.environ[k] = v
+    except Exception:
+        pass
+
 OLLAMA = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 MODEL = os.environ.get("OLLAMA_MODEL", "gemma3:4b")
 
@@ -190,7 +206,8 @@ def elevenlabs(url, body, ctype, accept="application/json"):
 
 def transcribe(audio, mime):
     ext = "m4a" if "mp4" in mime else "webm"
-    body, ctype = multipart({"model_id": EL_STT}, f"story.{ext}", mime, audio)
+    clean_mime = mime.split(";")[0].strip() if mime else "audio/webm"
+    body, ctype = multipart({"model_id": EL_STT}, f"story.{ext}", clean_mime, audio)
     return json.loads(elevenlabs("https://api.elevenlabs.io/v1/speech-to-text", body, ctype))["text"]
 
 

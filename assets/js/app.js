@@ -345,14 +345,15 @@
           $('finish-rec-btn').classList.add('hidden');
 
           try {
-            const blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
+            const mime = (mediaRecorder && mediaRecorder.mimeType) ? mediaRecorder.mimeType : 'audio/webm';
+            const blob = new Blob(recordedChunks, { type: mime });
             const b64 = await new Promise(res => {
               const r = new FileReader();
               r.onload = () => res(r.result.split(',')[1]);
               r.readAsDataURL(blob);
             });
-            const data = await api('/api/transcribe', { audio: b64, mime: mediaRecorder.mimeType });
-            $('transcription-text').value = data.text;
+            const data = await api('/api/transcribe', { audio: b64, mime });
+            $('transcription-text').value = data.text || '(No speech detected. Try speaking closer to the microphone.)';
             $('add-transcription-btn').classList.remove('hidden');
             $('rec-status-label').textContent = 'Transcript ready:';
           } catch (e) {
