@@ -30,9 +30,9 @@ A local, open-weight **Gemma model (via Ollama)** then powers two sacred interac
 
 Experience the live architectural altar running locally:
 
-{% github vinitchaurasia/ofrenda %}
+{% github chourasiavinit9-dev/memoir-de-ofrenda %}
 
-* **Repository:** [https://github.com/vinitchaurasia/ofrenda](https://github.com/vinitchaurasia/ofrenda)
+* **Repository:** [https://github.com/chourasiavinit9-dev/memoir-de-ofrenda](https://github.com/chourasiavinit9-dev/memoir-de-ofrenda)
 * **Demo Video / Walkthrough:** *(Add your Loom or Google Drive demo link here)*
 * **Architecture:** Python stdlib (`server.py`) + Vanilla HTML5/CSS3/ES6 (`index.html`, `assets/css/styles.css`, `assets/js/app.js`). Zero npm packages or pip dependencies required.
 
@@ -42,7 +42,7 @@ Experience the live architectural altar running locally:
 
 The complete source code is open source under the MIT License on GitHub:
 
-**[https://github.com/vinitchaurasia/ofrenda](https://github.com/vinitchaurasia/ofrenda)**
+**[https://github.com/chourasiavinit9-dev/memoir-de-ofrenda](https://github.com/chourasiavinit9-dev/memoir-de-ofrenda)**
 
 ### Automated Testing
 The repository includes a 30-case automated test suite covering input validation, XSS sanitization, anti-DDoS burst rate limiting, and WCAG accessibility contracts:

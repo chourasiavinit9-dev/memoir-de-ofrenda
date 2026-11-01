@@ -67,8 +67,8 @@ ollama pull gemma3:4b
 
 ### 2. Clone & Inspect
 ```bash
-git clone https://github.com/<your-username>/ofrenda.git
-cd ofrenda
+git clone https://github.com/chourasiavinit9-dev/memoir-de-ofrenda.git
+cd memoir-de-ofrenda
 ```
 
 ### 3. Light the Altar
